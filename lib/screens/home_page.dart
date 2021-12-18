@@ -106,24 +106,35 @@ class HomePage extends StatelessWidget {
     const double maxValue = 100;
     final int divisionToTwoAndHalf = (maxValue * 0.4).round();
 
-    return StoreConnector<AppState, _FormInputViewModel<double>>(
-        converter: (store) => _FormInputViewModel(
+    return StoreConnector<AppState, _WeigthViewModel<double>>(
+        converter: (store) => _WeigthViewModel(
             store.state.workoutFormInput.weigth,
+            store.state.workoutFormInput.bodyWeigth,
+            (value) =>
+                store.dispatch(UpdateWorkoutFormInputAction({"weigth": value})),
             (value) => store
-                .dispatch(UpdateWorkoutFormInputAction({"weigth": value}))),
+                .dispatch(UpdateWorkoutFormInputAction({"bodyWeigth": value}))),
         builder: (context, vm) {
+          bool showSlider = !vm.switchValue;
           return Column(children: [
-            Text("${vm.value} kg"),
-            Slider(
-                value: vm.value ?? 0,
-                min: minValue,
-                max: maxValue,
-                divisions: divisionToTwoAndHalf,
-                label: "${roundToClosestHalf(vm.value).toString()} kg",
-                onChanged: (double value) {
-                  final double roundedValue = roundToClosestHalf(value);
-                  vm.updateValue(roundedValue);
-                }),
+            Row(
+              children: [
+                Text("Kehonpaino"),
+                Switch(value: vm.switchValue, onChanged: vm.updateSwitchValue),
+              ],
+            ),
+            if (showSlider) Text("${vm.value} kg"),
+            if (showSlider)
+              Slider(
+                  value: vm.value ?? 0,
+                  min: minValue,
+                  max: maxValue,
+                  divisions: divisionToTwoAndHalf,
+                  label: "${roundToClosestHalf(vm.value).toString()} kg",
+                  onChanged: (double value) {
+                    final double roundedValue = roundToClosestHalf(value);
+                    vm.updateValue(roundedValue);
+                  }),
           ]);
         });
   }
@@ -145,22 +156,26 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _latestWorkoutSection() {
-    return StoreConnector<AppState, WorkoutGroup>(
+    return StoreConnector<AppState, WorkoutGroup?>(
         converter: (store) => store.state.latestWorkout,
-        builder: (context, vm) {
-          return Card(
-            child: ListTile(
-              leading: Icon(
-                Icons.star_rate_rounded,
-                size: 30,
-                color: Theme.of(context).colorScheme.secondary,
+        builder: (context, workout) {
+          if (workout != null) {
+            return Card(
+              child: ListTile(
+                leading: Icon(
+                  Icons.star_rate_rounded,
+                  size: 30,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                title: Text("${workout.name}: ${workout.setFormat}"),
+                subtitle: Text(workout.dateFormat),
+                dense: true,
+                style: ListTileStyle.drawer,
               ),
-              title: Text("${vm.name}: ${vm.setFormat}"),
-              subtitle: Text(vm.dateFormat),
-              dense: true,
-              style: ListTileStyle.drawer,
-            ),
-          );
+            );
+          } else {
+            return Text("Ei viimeistä treeniä");
+          }
         });
   }
 
@@ -212,6 +227,14 @@ class HomePage extends StatelessWidget {
       navBarIndex: 0,
     );
   }
+}
+
+class _WeigthViewModel<T> extends _FormInputViewModel {
+  final bool switchValue;
+  final void Function(bool?) updateSwitchValue;
+
+  _WeigthViewModel(value, this.switchValue, updateValue, this.updateSwitchValue)
+      : super(value, updateValue);
 }
 
 class _FormInputViewModel<T> {

@@ -26,6 +26,7 @@ class WorkoutRepository {
             name TEXT, 
             reps INTEGER, 
             weigth REAL, 
+            body_weigth INTEGER,
             timestamp TEXT, 
             year INTEGER, 
             month INTEGER, 
@@ -54,7 +55,7 @@ class WorkoutRepository {
   Future<List<WorkoutGroup>> getAllGroups() async {
     final Database dbContact = await db;
     final List<Map<String, Object?>> queryResult = await dbContact.rawQuery(
-        """SELECT year, month, day, name, reps, weigth, count(*) as sets 
+        """SELECT year, month, day, name, reps, weigth, count(*) as sets, avg(body_weigth) as body_weigth, GROUP_CONCAT(timestamp) as timestamps
                                     FROM workouts 
                                     GROUP BY year, month, day, name, reps, weigth 
                                     ORDER BY timestamp DESC""");
@@ -63,16 +64,19 @@ class WorkoutRepository {
     return queryResult.map((e) => WorkoutGroup.fromMap(e)).toList();
   }
 
-  Future<WorkoutGroup> getLatestGroup() async {
+  Future<WorkoutGroup?> getLatestGroup() async {
     final Database dbContact = await db;
     final List<Map<String, Object?>> queryResult = await dbContact.rawQuery(
-        """SELECT year, month, day, name, reps, weigth, count(*) as sets, GROUP_CONCAT(timestamp) as timestamps
+        """SELECT year, month, day, name, reps, weigth, count(*) as sets, avg(body_weigth) as body_weigth, GROUP_CONCAT(timestamp) as timestamps
                                     FROM workouts 
                                     GROUP BY year, month, day, name, reps, weigth 
                                     ORDER BY timestamp DESC
                                     LIMIT 1""");
     print("1 group got: ");
     print(queryResult.toString());
+    if (queryResult.isEmpty) {
+      return null;
+    }
     return queryResult.map((e) => WorkoutGroup.fromMap(e)).single;
   }
 
@@ -87,7 +91,8 @@ class WorkoutRepository {
           .map((x) => WorkoutMinimal(
               name: x.name,
               setsRepsWeigth: x.setFormat,
-              timestamps: x.timestampsInListFormat))
+              timestamps: x.timestampsInListFormat,
+              bodyWeigth: x.bodyWeigth))
           .toList();
 
       cards.add(WorkoutCard(date: date, workouts: workouts));

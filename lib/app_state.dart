@@ -2,7 +2,7 @@ import 'package:lifterapp/models/workout.dart'
     show Workout, WorkoutCard, WorkoutFormInput, WorkoutGroup;
 
 class AppState {
-  final WorkoutGroup latestWorkout;
+  final WorkoutGroup? latestWorkout;
   final List<WorkoutGroup> workouts;
   final List<Workout> rawWorkouts;
   final List<WorkoutCard> workoutCards;
@@ -18,8 +18,7 @@ class AppState {
 
   AppState.initialState()
       : workouts = [],
-        latestWorkout = WorkoutGroup(
-            name: "", sets: 0, reps: 0, weigth: 0, year: 0, month: 0, day: 0),
+        latestWorkout = null,
         workoutFormInput = WorkoutFormInput(),
         workoutCards = [],
         rawWorkouts = [];

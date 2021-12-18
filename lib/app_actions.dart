@@ -2,18 +2,20 @@ import 'package:lifterapp/models/workout.dart'
     show Workout, WorkoutCard, WorkoutGroup;
 
 class InsertWorkoutAction {
-  final WorkoutGroup latestWorkoutGroup;
+  final WorkoutGroup? latestWorkoutGroup;
   final List<WorkoutGroup> workoutGroups;
   final List<Workout> log;
+  List<WorkoutCard> cards;
 
   get getLatestWorkoutGroup => latestWorkoutGroup;
   get getWorkoutGroups => workoutGroups;
 
-  InsertWorkoutAction(this.latestWorkoutGroup, this.workoutGroups, this.log);
+  InsertWorkoutAction(
+      this.latestWorkoutGroup, this.workoutGroups, this.log, this.cards);
 }
 
 class GetLatestWorkoutGroupAction {
-  final WorkoutGroup latestWorkoutGroup;
+  final WorkoutGroup? latestWorkoutGroup;
 
   GetLatestWorkoutGroupAction(this.latestWorkoutGroup);
 }

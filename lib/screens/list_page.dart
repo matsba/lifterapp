@@ -8,7 +8,6 @@ import 'package:lifterapp/components/app_scaffold.dart';
 import 'package:lifterapp/components/bottom_navigationbar.dart';
 import 'package:lifterapp/models/workout.dart'
     show WorkoutCard, WorkoutGroup, WorkoutMinimal;
-import 'package:lifterapp/services/workout_helper.dart' show WorkoutHelper;
 
 class ListPage extends StatelessWidget {
   Widget _buildWorkoutCardList(

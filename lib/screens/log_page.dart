@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:intl/intl.dart';
 import 'package:lifterapp/app_state.dart';
 import 'package:lifterapp/components/app_scaffold.dart';
 import 'package:lifterapp/models/workout.dart';
@@ -7,10 +8,12 @@ import 'package:lifterapp/models/workout.dart';
 class LogPage extends StatelessWidget {
   DataRow _workoutLogRow(Workout workout) {
     return DataRow(cells: [
-      DataCell(Text(workout.timestamp.toString())),
+      DataCell(Text(DateFormat("d.M.y H:mm.ss").format(workout.timestamp))),
       DataCell(Text(workout.name)),
       DataCell(Text(workout.reps.toString())),
-      DataCell(Text(workout.weigth.toString() + " kg")),
+      workout.bodyWeigth
+          ? const DataCell(Text(""))
+          : DataCell(Text(workout.weigth.toString() + " kg"))
     ]);
   }
 
@@ -30,6 +33,8 @@ class LogPage extends StatelessWidget {
               DataColumn(label: Text("Paino")),
             ],
             rows: _generateRows(log),
+            columnSpacing: 16.0,
+            dataRowHeight: 30,
           );
         });
   }

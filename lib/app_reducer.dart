@@ -38,7 +38,7 @@ AppState reducer(AppState state, dynamic action) {
         latestWorkout: action.getLatestWorkoutGroup,
         workouts: action.getWorkoutGroups,
         workoutFormInput: state.workoutFormInput,
-        workoutCards: state.workoutCards,
+        workoutCards: action.cards,
         rawWorkouts: action.log);
   }
   if (action is UpdateWorkoutFormInputAction) {

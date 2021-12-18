@@ -31,6 +31,11 @@ class GlobalTheme {
           fontStyle: FontStyle.italic,
           fontWeight: FontWeight.bold),
     ),
+
+    switchTheme: SwitchThemeData(
+        trackColor:
+            MaterialStateProperty.all(primaryColorDark.withOpacity(0.5)),
+        thumbColor: MaterialStateProperty.all(primaryColorDark)),
     // Define the default font family.
     fontFamily: 'Inter',
 

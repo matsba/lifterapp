@@ -18,13 +18,15 @@ ThunkAction<AppState> insertWorkout(WorkoutFormInput workout) {
         name: workout.name!,
         reps: workout.reps!,
         weigth: workout.weigth!,
+        bodyWeigth: workout.bodyWeigth,
         timestamp: DateTime.now());
 
     await repository.insert(insert);
     var workouts = await repository.getAllGroups();
     var latest = await repository.getLatestGroup();
+    var cards = await repository.getAllCards();
     var log = await repository.getAll();
-    store.dispatch(InsertWorkoutAction(latest, workouts, log));
+    store.dispatch(InsertWorkoutAction(latest, workouts, log, cards));
   };
 }
 

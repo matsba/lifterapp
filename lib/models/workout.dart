@@ -2,11 +2,13 @@ class WorkoutFormInput {
   String? name;
   int? reps;
   double? weigth;
+  bool bodyWeigth;
 
   WorkoutFormInput({
     this.name = "",
     this.reps = 0,
     this.weigth = 0.0,
+    this.bodyWeigth = false,
   });
 
   newFromFormData(Map<String, dynamic> form, WorkoutFormInput prev) {
@@ -20,20 +22,23 @@ class WorkoutFormInput {
       if (key == "weigth") {
         prev.weigth = form[key];
       }
+      if (key == "bodyWeigth") {
+        prev.bodyWeigth = form[key];
+      }
       return prev;
     }
   }
 
-  WorkoutFormInput.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        reps = json['reps'],
-        weigth = json['weigth'];
+  // WorkoutFormInput.fromJson(Map<String, dynamic> json)
+  //     : name = json['name'],
+  //       reps = json['reps'],
+  //       weigth = json['weigth'];
 
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'reps': reps,
-        'weigth': weigth,
-      };
+  // Map<String, dynamic> toJson() => {
+  //       'name': name,
+  //       'reps': reps,
+  //       'weigth': weigth,
+  //     };
 }
 
 class Workout {
@@ -41,6 +46,7 @@ class Workout {
   String name;
   int reps;
   double weigth;
+  bool bodyWeigth;
   DateTime timestamp;
 
   int get year => timestamp.year;
@@ -53,6 +59,7 @@ class Workout {
     required this.reps,
     required this.weigth,
     required this.timestamp,
+    required this.bodyWeigth,
   });
 
   Workout.fromMap(Map<String, dynamic> res)
@@ -60,6 +67,7 @@ class Workout {
         name = res["name"],
         reps = res["reps"],
         weigth = res["weigth"],
+        bodyWeigth = res["body_weigth"] > 0 ? true : false,
         timestamp = DateTime.parse(res["timestamp"]);
 
   Map<String, dynamic> toMap() {
@@ -69,6 +77,7 @@ class Workout {
       'reps': reps,
       'weigth': weigth,
       'timestamp': timestamp.toString(),
+      'body_weigth': bodyWeigth ? 1 : 0,
       'year': year,
       'month': month,
       'day': day
@@ -84,9 +93,11 @@ class WorkoutGroup {
   final int year;
   final int month;
   final int day;
+  final bool bodyWeigth;
   final String? timestamps;
 
-  String get setFormat => "$sets x $reps x $weigth kg";
+  String get setFormat =>
+      bodyWeigth ? "$sets x $reps" : "$sets x $reps x $weigth kg";
   String get dateFormat => "$day.$month.$year";
 
   List<DateTime> get timestampsInListFormat =>
@@ -102,6 +113,7 @@ class WorkoutGroup {
     required this.year,
     required this.month,
     required this.day,
+    required this.bodyWeigth,
     this.timestamps,
   });
 
@@ -113,12 +125,14 @@ class WorkoutGroup {
         year = res["year"],
         month = res["month"],
         day = res["day"],
+        bodyWeigth = res["body_weigth"] > 0 ? true : false,
         timestamps = res["timestamps"];
 }
 
 class WorkoutMinimal {
   final String name;
   final String setsRepsWeigth;
+  final bool bodyWeigth;
   final List<DateTime> timestamps;
 
   DateTime get firstTimestamp => timestamps[0];
@@ -126,6 +140,7 @@ class WorkoutMinimal {
 
   WorkoutMinimal(
       {required this.name,
+      required this.bodyWeigth,
       required this.setsRepsWeigth,
       required this.timestamps});
 }
