@@ -225,6 +225,7 @@ class HomePage extends StatelessWidget {
         _latestWorkoutSection()
       ],
       navBarIndex: 0,
+      expanded: true,
     );
   }
 }

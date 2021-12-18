@@ -8,11 +8,13 @@ class AppScaffold extends StatelessWidget {
   final List<Widget> bodyContent;
   final int? navBarIndex;
   final bool? showNavbar;
+  final bool? expanded;
 
   const AppScaffold(
       {required this.bodyContent,
       this.navBarIndex,
       this.showNavbar = true,
+      this.expanded = false,
       Key? key})
       : super(key: key);
 
@@ -46,6 +48,23 @@ class AppScaffold extends StatelessWidget {
         });
   }
 
+  Widget _expandedContainer() {
+    return Flex(direction: Axis.vertical, children: [
+      Expanded(
+          child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(children: bodyContent),
+      ))
+    ]);
+  }
+
+  Widget _staticContainer() {
+    return Container(
+      child: Column(children: bodyContent),
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,10 +72,7 @@ class AppScaffold extends StatelessWidget {
         title: Text('Lifter-app'),
         actions: [_moreButton()],
       ),
-      body: Container(
-        child: Column(children: bodyContent),
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-      ),
+      body: expanded! ? _expandedContainer() : _staticContainer(),
       bottomNavigationBar:
           (showNavbar! ? BottomNavBar(navBarIndex ?? 0) : Container()),
     );
