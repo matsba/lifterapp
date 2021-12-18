@@ -94,15 +94,6 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   fonts:
-    - family: Bakbak
-      fonts:
-        - asset: lib/fonts/BakbakOne-Regular.ttf
-    - family: Poppins
-      fonts:
-        - asset: lib/fonts/Poppins-Regular.ttf
-    - family: Inter
-      fonts:
-        - asset: lib/fonts/Inter-VariableFont.ttf
     - family: WorkSans
       fonts:
         - asset: lib/fonts/WorkSans-Regular.ttf
