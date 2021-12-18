@@ -103,6 +103,16 @@ flutter:
     - family: Inter
       fonts:
         - asset: lib/fonts/Inter-VariableFont.ttf
+    - family: WorkSans
+      fonts:
+        - asset: lib/fonts/WorkSans-Regular.ttf
+        - asset: lib/fonts/WorkSans-ExtraBold.ttf
+          weight: 800
+        - asset: lib/fonts/WorkSans-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
+        - asset: lib/fonts/WorkSans-Italic.ttf
+          style: italic
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

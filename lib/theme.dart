@@ -37,7 +37,7 @@ class GlobalTheme {
             MaterialStateProperty.all(primaryColorDark.withOpacity(0.5)),
         thumbColor: MaterialStateProperty.all(primaryColorDark)),
     // Define the default font family.
-    fontFamily: 'Inter',
+    fontFamily: 'WorkSans',
 
     // Define the default `TextTheme`. Use this to specify the default
     // text styling for headlines, titles, bodies of text, and more.
@@ -46,8 +46,8 @@ class GlobalTheme {
           fontSize: 36.0, fontWeight: FontWeight.w800, color: primary),
       headline4: TextStyle(
         fontSize: 16.0,
-        fontWeight: FontWeight.w200,
-        color: Colors.black,
+        fontWeight: FontWeight.bold,
+        color: primary,
       ),
       headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
       bodyText2: TextStyle(fontSize: 12.0),

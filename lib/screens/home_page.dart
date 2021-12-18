@@ -206,7 +206,7 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          padding: EdgeInsets.only(bottom: padding)),
+          padding: EdgeInsets.only(bottom: padding, top: padding)),
     );
   }
 
@@ -215,7 +215,7 @@ class HomePage extends StatelessWidget {
     return AppScaffold(
       bodyContent: [
         Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
           child: Column(
             children: [
               _titleRow(context, "Harjoitus", decoration: false),
