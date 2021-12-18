@@ -13,6 +13,7 @@ class ListPage extends StatelessWidget {
   Widget _buildWorkoutCardList(
       BuildContext context, int i, List<WorkoutCard> cards) {
     WorkoutCard card = cards[i];
+    int cardNumber = cards.length - i;
 
     return Container(
         padding: EdgeInsets.only(bottom: 16),
@@ -21,7 +22,7 @@ class ListPage extends StatelessWidget {
             children: [
               ListTile(
                 //leading: Icon(Icons.fitness_center),
-                title: Text('Treeni #${i + 1}',
+                title: Text('Treeni #${cardNumber}',
                     style: Theme.of(context).textTheme.headline1),
                 subtitle: Text(card.date),
               ),
@@ -31,7 +32,8 @@ class ListPage extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: card.workouts.length,
                   itemBuilder: (BuildContext context, int index) =>
-                      _buildWorkoutList(context, index, card.workouts),
+                      _buildWorkoutList(
+                          context, index, card.workouts.reversed.toList()),
                 )
               ]),
               Container(

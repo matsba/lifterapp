@@ -32,7 +32,7 @@ class LogPage extends StatelessWidget {
               DataColumn(label: Text("Toistot")),
               DataColumn(label: Text("Paino")),
             ],
-            rows: _generateRows(log),
+            rows: _generateRows(log.reversed.toList()),
             columnSpacing: 16.0,
             dataRowHeight: 30,
           );
