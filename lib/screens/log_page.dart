@@ -8,7 +8,7 @@ import 'package:lifterapp/models/workout.dart';
 class LogPage extends StatelessWidget {
   DataRow _workoutLogRow(Workout workout) {
     return DataRow(cells: [
-      DataCell(Text(DateFormat("d.M.y H:mm.ss").format(workout.timestamp))),
+      DataCell(Text(DateFormat("d.M.y H:mm").format(workout.timestamp))),
       DataCell(Text(workout.name)),
       DataCell(Text(workout.reps.toString())),
       workout.bodyWeigth
@@ -50,7 +50,7 @@ class LogPage extends StatelessWidget {
         ),
       ),
       SingleChildScrollView(
-        child: _workoutLog(),
+        child: Align(child: _workoutLog(), alignment: Alignment.centerLeft),
         scrollDirection: Axis.vertical,
       )
     ]);

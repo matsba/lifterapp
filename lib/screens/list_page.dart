@@ -15,7 +15,7 @@ class ListPage extends StatelessWidget {
     WorkoutCard card = cards[i];
 
     return Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.only(bottom: 16),
         child: Card(
           child: Column(
             children: [

@@ -214,15 +214,22 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
       bodyContent: [
-        _titleRow(context, "Harjoitus", decoration: false),
-        _inputWorkoutName(),
-        _titleRow(context, "Toistot", decoration: false),
-        _inputGridButtonNumberInput(20, context),
-        _titleRow(context, "Paino", decoration: false),
-        _sliderInput(),
-        _submitButton(),
-        _titleRow(context, "Viimeisin setti", decoration: false),
-        _latestWorkoutSection()
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              _titleRow(context, "Harjoitus", decoration: false),
+              _inputWorkoutName(),
+              _titleRow(context, "Toistot", decoration: false),
+              _inputGridButtonNumberInput(20, context),
+              _titleRow(context, "Paino", decoration: false),
+              _sliderInput(),
+              _submitButton(),
+              _titleRow(context, "Viimeisin setti", decoration: false),
+              _latestWorkoutSection()
+            ],
+          ),
+        )
       ],
       navBarIndex: 0,
       expanded: true,

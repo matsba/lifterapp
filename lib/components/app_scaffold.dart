@@ -61,7 +61,7 @@ class AppScaffold extends StatelessWidget {
   Widget _staticContainer() {
     return Container(
       child: Column(children: bodyContent),
-      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+      padding: const EdgeInsets.all(16.0),
     );
   }
 
