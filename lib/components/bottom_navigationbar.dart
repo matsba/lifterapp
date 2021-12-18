@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart'
+    show
+        BottomNavigationBar,
+        BottomNavigationBarItem,
+        BuildContext,
+        Colors,
+        Icon,
+        Icons,
+        Key,
+        StatelessWidget,
+        Theme,
+        Widget;
+import 'package:flutter_redux/flutter_redux.dart' show StoreConnector;
+import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
+import 'package:lifterapp/app_state.dart' show AppState;
+import 'package:redux/redux.dart' show Store;
+
+class BottomNavBar extends StatelessWidget {
+  final int selectedIndex;
+
+  const BottomNavBar(int this.selectedIndex, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, Store<AppState>>(
+        converter: (store) => store,
+        builder: (context, store) {
+          return BottomNavigationBar(
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.fitness_center_sharp),
+                  label: 'Lisää',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.list),
+                  label: 'Lista',
+                ),
+              ],
+              currentIndex: selectedIndex,
+              onTap: (index) {
+                if (index == 0) {
+                  store.dispatch(NavigateToAction.replace('/'));
+                }
+                if (index == 1) {
+                  store.dispatch(NavigateToAction.replace('/list'));
+                }
+              });
+        });
+  }
+}
