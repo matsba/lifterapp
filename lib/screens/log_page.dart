@@ -13,7 +13,12 @@ class LogPage extends StatelessWidget {
       DataCell(Text(workout.reps.toString())),
       workout.bodyWeigth
           ? const DataCell(Text(""))
-          : DataCell(Text(workout.weigth.toString() + " kg"))
+          : DataCell(Text(workout.weigth.toString() + " kg")),
+      DataCell(Icon(
+        Icons.delete_outline,
+        color: Colors.redAccent,
+        size: 16,
+      )) //TODO: Poista workout
     ]);
   }
 
@@ -31,9 +36,10 @@ class LogPage extends StatelessWidget {
               DataColumn(label: Text("Harjoitus")),
               DataColumn(label: Text("Toistot")),
               DataColumn(label: Text("Paino")),
+              DataColumn(label: Text("")),
             ],
             rows: _generateRows(log.reversed.toList()),
-            columnSpacing: 16.0,
+            columnSpacing: 8.0,
             dataRowHeight: 30,
           );
         });

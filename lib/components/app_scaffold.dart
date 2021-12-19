@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
@@ -69,7 +71,18 @@ class AppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lifter-app'),
+        title: Row(
+          children: [
+            Image.asset(
+              "lib/assets/logo-512.png",
+              scale: 12,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            const Text('Lifter.app'),
+          ],
+        ),
         actions: [_moreButton()],
       ),
       body: expanded! ? _expandedContainer() : _staticContainer(),

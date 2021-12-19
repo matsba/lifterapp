@@ -47,7 +47,10 @@ class HomePage extends StatelessWidget {
         builder: (context, vm) {
           return Column(
             children: [
-              TextField(onChanged: vm.updateValue),
+              TextField(
+                onChanged: vm.updateValue,
+                //TODO: Säilytä teksti kun käyttäjä poistuu sivulta
+              ),
             ],
           );
         });
