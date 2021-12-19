@@ -14,6 +14,19 @@ class InsertWorkoutAction {
       this.latestWorkoutGroup, this.workoutGroups, this.log, this.cards);
 }
 
+class DeletetWorkoutAction {
+  final WorkoutGroup? latestWorkoutGroup;
+  final List<WorkoutGroup> workoutGroups;
+  final List<Workout> log;
+  List<WorkoutCard> cards;
+
+  get getLatestWorkoutGroup => latestWorkoutGroup;
+  get getWorkoutGroups => workoutGroups;
+
+  DeletetWorkoutAction(
+      this.latestWorkoutGroup, this.workoutGroups, this.log, this.cards);
+}
+
 class GetLatestWorkoutGroupAction {
   final WorkoutGroup? latestWorkoutGroup;
 

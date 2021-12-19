@@ -82,5 +82,6 @@ class WorkoutRepository {
       where: "id = ?",
       whereArgs: [id],
     );
+    print("Deleted workout $id");
   }
 }

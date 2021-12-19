@@ -1,5 +1,6 @@
 import 'package:lifterapp/app_actions.dart'
     show
+        DeletetWorkoutAction,
         GetLatestWorkoutGroupAction,
         GetWorkoutCardsAction,
         GetWorkoutLogAction,
@@ -48,5 +49,17 @@ ThunkAction<AppState> getWorkoutLog() {
   return (Store<AppState> store) async {
     var log = await repository.getAll();
     store.dispatch(GetWorkoutLogAction(log));
+  };
+}
+
+ThunkAction<AppState> deleteWorkout(int id) {
+  return (Store<AppState> store) async {
+    await repository.deleteWorkout(id);
+
+    var workouts = await repository.getAllGroups();
+    var latest = await repository.getLatestGroup();
+    var cards = await repository.getAllCards();
+    var log = await repository.getAll();
+    store.dispatch(DeletetWorkoutAction(latest, workouts, log, cards));
   };
 }
