@@ -11,6 +11,7 @@ class AppScaffold extends StatelessWidget {
   final int? navBarIndex;
   final bool? showNavbar;
   final bool? expanded;
+  final _padding = const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0);
 
   const AppScaffold(
       {required this.bodyContent,
@@ -56,6 +57,7 @@ class AppScaffold extends StatelessWidget {
           child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(children: bodyContent),
+        padding: _padding,
       ))
     ]);
   }
@@ -63,31 +65,45 @@ class AppScaffold extends StatelessWidget {
   Widget _staticContainer() {
     return Container(
       child: Column(children: bodyContent),
-      padding: const EdgeInsets.all(16.0),
+      padding: _padding,
+    );
+  }
+
+  AppBar _appBar() {
+    return AppBar(
+      title: Row(
+        children: [
+          Image.asset(
+            "lib/assets/logo-512.png",
+            scale: 12,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          const Text('Lifter.app'),
+        ],
+      ),
+      actions: [_moreButton()],
+    );
+  }
+
+  Widget _scaffoldWithNavbar() {
+    return Scaffold(
+      appBar: _appBar(),
+      body: expanded! ? _expandedContainer() : _staticContainer(),
+      bottomNavigationBar: BottomNavBar(navBarIndex ?? 0),
+    );
+  }
+
+  Widget _scaffoldWithoutNavbar() {
+    return Scaffold(
+      appBar: _appBar(),
+      body: expanded! ? _expandedContainer() : _staticContainer(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Image.asset(
-              "lib/assets/logo-512.png",
-              scale: 12,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            const Text('Lifter.app'),
-          ],
-        ),
-        actions: [_moreButton()],
-      ),
-      body: expanded! ? _expandedContainer() : _staticContainer(),
-      bottomNavigationBar:
-          (showNavbar! ? BottomNavBar(navBarIndex ?? 0) : Container()),
-    );
+    return showNavbar! ? _scaffoldWithNavbar() : _scaffoldWithoutNavbar();
   }
 }

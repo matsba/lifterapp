@@ -48,6 +48,7 @@ class LogPage extends StatelessWidget {
                       ),
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         SimpleDialogOption(
                           onPressed: () {
@@ -100,19 +101,20 @@ class LogPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(bodyContent: [
-      Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          "Treeniloki",
-          style: Theme.of(context).textTheme.headline1,
+    return AppScaffold(
+      bodyContent: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Treeniloki",
+            style: Theme.of(context).textTheme.headline1,
+          ),
         ),
-      ),
-      SingleChildScrollView(
-        child:
-            Align(child: _workoutLog(context), alignment: Alignment.centerLeft),
-        scrollDirection: Axis.vertical,
-      )
-    ]);
+        Align(child: _workoutLog(context), alignment: Alignment.centerLeft),
+        //TODO: Text("Sivun loppu")  pitkä lista ei näy loppuun asti
+      ],
+      showNavbar: false,
+      expanded: true,
+    );
   }
 }
