@@ -35,7 +35,10 @@ class GlobalTheme {
     switchTheme: SwitchThemeData(
         trackColor:
             MaterialStateProperty.all(primaryColorDark.withOpacity(0.5)),
-        thumbColor: MaterialStateProperty.all(primaryColorDark)),
+        thumbColor: MaterialStateProperty.all(primaryColorDark),
+        overlayColor: MaterialStateProperty.all(primaryColorAccent)),
+
+    snackBarTheme: SnackBarThemeData(backgroundColor: primaryColorAccent),
     // Define the default font family.
     fontFamily: 'WorkSans',
 

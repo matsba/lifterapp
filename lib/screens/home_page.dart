@@ -103,7 +103,7 @@ class HomePage extends StatelessWidget {
         });
   }
 
-  Widget _sliderInput() {
+  Widget _sliderInput(Widget title) {
     double roundToClosestHalf(value) => ((value * 2).roundToDouble() / 2);
     const double minValue = 0;
     const double maxValue = 100;
@@ -121,9 +121,16 @@ class HomePage extends StatelessWidget {
           bool showSlider = !vm.switchValue;
           return Column(children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Kehonpaino"),
-                Switch(value: vm.switchValue, onChanged: vm.updateSwitchValue),
+                title,
+                Row(
+                  children: [
+                    Text("Kehonpaino"),
+                    Switch(
+                        value: vm.switchValue, onChanged: vm.updateSwitchValue),
+                  ],
+                ),
               ],
             ),
             if (showSlider) Text("${vm.value} kg"),
@@ -142,7 +149,7 @@ class HomePage extends StatelessWidget {
         });
   }
 
-  Widget _submitButton() {
+  Widget _submitButton(void Function() onSuccessCallback) {
     return StoreConnector<AppState, _FormInputViewModel<WorkoutFormInput>>(
         converter: (store) => _FormInputViewModel(store.state.workoutFormInput,
             (form) => store.dispatch(insertWorkout(form!))),
@@ -150,12 +157,32 @@ class HomePage extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(top: 8, bottom: 8),
             child: ElevatedButton(
-              onPressed: () => vm.updateValue(vm.value),
+              onPressed: () {
+                vm.updateValue(vm.value);
+                onSuccessCallback();
+              },
               child: const SizedBox(
                   child: Center(child: Text('Lisää')), height: 50.0),
             ),
           );
         });
+  }
+
+  void _showSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: 110),
+          child: Column(
+            children: [
+              _titleRow(context, "Lisätty settiin!"),
+              _latestWorkoutSection(),
+            ],
+          ),
+        ),
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 
   Widget _latestWorkoutSection() {
@@ -182,19 +209,8 @@ class HomePage extends StatelessWidget {
         });
   }
 
-  Widget _titleDecoration(BuildContext context) {
-    return Container(
-        color: Theme.of(context).primaryColor.withOpacity(0.7),
-        height: 35,
-        width: 60,
-        //margin: EdgeInsets.only(right: 10),
-        transform: Matrix4.identity()
-          ..setEntry(3, 2, 0.01)
-          ..rotateX(0.9));
-  }
-
   Widget _titleRow(BuildContext context, String title,
-      {bool decoration = true}) {
+      {bool decoration = true, TextStyle? textStyle}) {
     const double padding = 8.0;
 
     return Align(
@@ -202,10 +218,9 @@ class HomePage extends StatelessWidget {
       child: Padding(
           child: Row(
             children: [
-              decoration ? _titleDecoration(context) : Container(),
               Text(
                 title,
-                style: Theme.of(context).textTheme.headline4,
+                style: textStyle ?? Theme.of(context).textTheme.headline4,
               ),
             ],
           ),
@@ -218,16 +233,20 @@ class HomePage extends StatelessWidget {
     return AppScaffold(
       bodyContent: [
         Padding(
-          padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+          padding: EdgeInsets.only(bottom: 16.0),
           child: Column(
             children: [
+              _titleRow(context, "Lisää treeni",
+                  decoration: false,
+                  textStyle: Theme.of(context).textTheme.headline1),
               _titleRow(context, "Harjoitus", decoration: false),
               _inputWorkoutName(),
               _titleRow(context, "Toistot", decoration: false),
               _inputGridButtonNumberInput(20, context),
-              _titleRow(context, "Paino", decoration: false),
-              _sliderInput(),
-              _submitButton(),
+              _sliderInput(
+                _titleRow(context, "Paino", decoration: false),
+              ),
+              _submitButton(() => _showSnackBar(context)),
               _titleRow(context, "Viimeisin setti", decoration: false),
               _latestWorkoutSection()
             ],
