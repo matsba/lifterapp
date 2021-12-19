@@ -17,34 +17,26 @@ import 'package:redux/redux.dart' show Store;
 
 class BottomNavBar extends StatelessWidget {
   final int selectedIndex;
+  final Function(int) changePage;
 
-  const BottomNavBar(int this.selectedIndex, {Key? key}) : super(key: key);
+  const BottomNavBar(this.selectedIndex, this.changePage, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, Store<AppState>>(
         converter: (store) => store,
         builder: (context, store) {
-          return BottomNavigationBar(
-              items: [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.fitness_center_sharp),
-                  label: 'Lisää',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.list),
-                  label: 'Lista',
-                ),
-              ],
-              currentIndex: selectedIndex,
-              onTap: (index) {
-                if (index == 0) {
-                  store.dispatch(NavigateToAction.replace('/'));
-                }
-                if (index == 1) {
-                  store.dispatch(NavigateToAction.replace('/list'));
-                }
-              });
+          return BottomNavigationBar(items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.fitness_center_sharp),
+              label: 'Lisää',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: 'Lista',
+            ),
+          ], currentIndex: selectedIndex, onTap: changePage);
         });
   }
 }

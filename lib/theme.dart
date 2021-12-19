@@ -39,6 +39,9 @@ class GlobalTheme {
         overlayColor: MaterialStateProperty.all(primaryColorAccent)),
 
     snackBarTheme: SnackBarThemeData(backgroundColor: primaryColorAccent),
+    pageTransitionsTheme: PageTransitionsTheme(builders: {
+      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+    }),
     // Define the default font family.
     fontFamily: 'WorkSans',
 

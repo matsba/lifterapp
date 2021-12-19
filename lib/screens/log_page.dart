@@ -102,7 +102,7 @@ class LogPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      bodyContent: [
+      bodyContent: Column(children: [
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -112,8 +112,7 @@ class LogPage extends StatelessWidget {
         ),
         Align(child: _workoutLog(context), alignment: Alignment.centerLeft),
         //TODO: Text("Sivun loppu")  pitkä lista ei näy loppuun asti
-      ],
-      showNavbar: false,
+      ]),
       expanded: true,
     );
   }

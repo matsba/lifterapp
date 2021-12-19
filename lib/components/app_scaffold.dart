@@ -7,16 +7,16 @@ import 'package:lifterapp/app_state.dart';
 import 'package:lifterapp/components/bottom_navigationbar.dart';
 
 class AppScaffold extends StatelessWidget {
-  final List<Widget> bodyContent;
+  final Widget bodyContent;
   final int? navBarIndex;
-  final bool? showNavbar;
+  final BottomNavBar? navbar;
   final bool? expanded;
   final _padding = const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0);
 
   const AppScaffold(
       {required this.bodyContent,
       this.navBarIndex,
-      this.showNavbar = true,
+      this.navbar,
       this.expanded = false,
       Key? key})
       : super(key: key);
@@ -51,24 +51,6 @@ class AppScaffold extends StatelessWidget {
         });
   }
 
-  Widget _expandedContainer() {
-    return Flex(direction: Axis.vertical, children: [
-      Expanded(
-          child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(children: bodyContent),
-        padding: _padding,
-      ))
-    ]);
-  }
-
-  Widget _staticContainer() {
-    return Container(
-      child: Column(children: bodyContent),
-      padding: _padding,
-    );
-  }
-
   AppBar _appBar() {
     return AppBar(
       title: Row(
@@ -87,23 +69,34 @@ class AppScaffold extends StatelessWidget {
     );
   }
 
+  Widget _expandedScrollContainer() {
+    return Flex(direction: Axis.vertical, children: [
+      Expanded(
+          child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: bodyContent,
+        padding: _padding,
+      ))
+    ]);
+  }
+
   Widget _scaffoldWithNavbar() {
     return Scaffold(
       appBar: _appBar(),
-      body: expanded! ? _expandedContainer() : _staticContainer(),
-      bottomNavigationBar: BottomNavBar(navBarIndex ?? 0),
+      body: _expandedScrollContainer(),
+      bottomNavigationBar: navbar,
     );
   }
 
   Widget _scaffoldWithoutNavbar() {
     return Scaffold(
       appBar: _appBar(),
-      body: expanded! ? _expandedContainer() : _staticContainer(),
+      body: _expandedScrollContainer(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return showNavbar! ? _scaffoldWithNavbar() : _scaffoldWithoutNavbar();
+    return navbar != null ? _scaffoldWithNavbar() : _scaffoldWithoutNavbar();
   }
 }

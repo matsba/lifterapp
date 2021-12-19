@@ -75,24 +75,21 @@ class ListPage extends StatelessWidget {
         converter: (store) => _WorkoutCardListViewModel(
             store.state.workoutCards, () => store.dispatch(getWorkoutCards())),
         builder: (context, vm) {
-          return Flexible(
-              child: ListView.builder(
+          return ListView.builder(
             //scrollDirection: Axis.vertical,
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: vm.cards.length,
             itemBuilder: (BuildContext context, int index) =>
                 _buildWorkoutCardList(context, index, vm.cards),
             //dragStartBehavior: DragStartBehavior.down,
-          ));
+          );
         });
   }
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      bodyContent: [_workoutCardsList()],
-      navBarIndex: 1,
-    );
+    return _workoutCardsList();
   }
 }
 

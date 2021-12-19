@@ -15,8 +15,6 @@ import 'package:redux_thunk/redux_thunk.dart' show thunkMiddleware;
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // final store = Store<AppState>(reducer,
-  //     initialState: AppState.initialState(), middleware: [thunkMiddleware]);
   final store = Store<AppState>(reducer,
       initialState: AppState.initialState(),
       middleware: [const NavigationMiddleware(), thunkMiddleware]);
