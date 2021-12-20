@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:lifterapp/app_state.dart';
 import 'package:lifterapp/components/bottom_navigationbar.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AppScaffold extends StatelessWidget {
   final Widget bodyContent;
@@ -21,20 +20,15 @@ class AppScaffold extends StatelessWidget {
       Key? key})
       : super(key: key);
 
-  PopupMenuItem _workoutLogLink({iconColor, link}) {
+  PopupMenuItem _workoutLogLink(BuildContext context, int value) {
     return PopupMenuItem(
-        child: GestureDetector(
-      onTap: () => link(),
-      child: Row(
-        children: [
-          Icon(
-            Icons.list_alt_outlined,
-            color: iconColor,
-          ),
-          const Text("Treeniloki"),
-        ],
-      ),
-    ));
+        child: _popUpMenuItemRow(
+            text: "Treeniloki",
+            icon: Icon(
+              Icons.list_alt_outlined,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            value: value));
   }
 
   Widget _moreButton() {
@@ -43,12 +37,48 @@ class AppScaffold extends StatelessWidget {
             () => store.dispatch(NavigateToAction.replace('/log')),
         builder: (context, navigateToLog) {
           return PopupMenuButton(
+              padding: EdgeInsets.all(0),
+              onSelected: (result) {
+                if (result == 1) {
+                  navigateToLog();
+                }
+              },
               itemBuilder: (context) => [
-                    _workoutLogLink(
-                        iconColor: Theme.of(context).colorScheme.primary,
-                        link: navigateToLog)
+                    _workoutLogLink(context, 1),
+                    _appVersionText(context, 2),
                   ]);
         });
+  }
+
+  PopupMenuItem _popUpMenuItemRow(
+      {required String text, Icon? icon, required int value}) {
+    return PopupMenuItem(
+        value: value,
+        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          icon ?? Container(),
+          SizedBox(width: 8.0),
+          Text(text),
+        ]));
+  }
+
+  PopupMenuItem _appVersionText(BuildContext context, int value) {
+    return PopupMenuItem(
+        child: FutureBuilder(
+            future: PackageInfo.fromPlatform(),
+            builder: (BuildContext context,
+                    AsyncSnapshot<PackageInfo> packageInfo) =>
+                packageInfo.hasData
+                    ? _popUpMenuItemRow(
+                        text: packageInfo.data!.version,
+                        icon: Icon(
+                          Icons.info_outline,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        value: 2)
+                    : _popUpMenuItemRow(
+                        text: "",
+                        value: 2,
+                      )));
   }
 
   AppBar _appBar() {
