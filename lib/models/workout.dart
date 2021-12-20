@@ -150,7 +150,13 @@ class WorkoutCard {
   final List<WorkoutMinimal> workouts;
 
   String get restingTimeInMinutesAndSeconds => "0:00"; //TODO;
-  String get duration => "1:30"; //TODO implementoi
+  String get duration {
+    List<DateTime> timestamps =
+        workouts.map((x) => x.timestamps).expand((x) => x).toList();
+    timestamps.sort((a, b) => a.compareTo(b));
+    var difference = timestamps.last.difference(timestamps.first);
+    return "${difference.inMinutes} mins";
+  }
 
   WorkoutCard({required this.date, required this.workouts});
 }
