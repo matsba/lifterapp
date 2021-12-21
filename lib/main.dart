@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
             // Manage your route names here
             switch (settings.name) {
               case '/':
-                builder = (BuildContext context) => HomePage();
+                builder = (BuildContext context) => const HomePage();
                 break;
               case '/list':
                 builder = (BuildContext context) => ListPage();

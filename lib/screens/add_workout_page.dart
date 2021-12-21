@@ -204,7 +204,10 @@ class AddWorkoutPage extends StatelessWidget {
               ),
             );
           } else {
-            return Text("Ei viimeistä treeniä");
+            return const Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text("Ei viimeistä treeniä"),
+            );
           }
         });
   }
@@ -230,22 +233,27 @@ class AddWorkoutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _titleRow(context, "Lisää treeni",
-            decoration: false,
-            textStyle: Theme.of(context).textTheme.headline1),
-        _titleRow(context, "Harjoitus", decoration: false),
-        _inputWorkoutName(),
-        _titleRow(context, "Toistot", decoration: false),
-        _inputGridButtonNumberInput(20, context),
-        _sliderInput(
-          _titleRow(context, "Paino", decoration: false),
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            _titleRow(context, "Lisää treeni",
+                decoration: false,
+                textStyle: Theme.of(context).textTheme.headline1),
+            _titleRow(context, "Harjoitus", decoration: false),
+            _inputWorkoutName(),
+            _titleRow(context, "Toistot", decoration: false),
+            _inputGridButtonNumberInput(20, context),
+            _sliderInput(
+              _titleRow(context, "Paino", decoration: false),
+            ),
+            _submitButton(() => _showSnackBar(context)),
+            _titleRow(context, "Viimeisin setti", decoration: false),
+            _latestWorkoutSection()
+          ],
         ),
-        _submitButton(() => _showSnackBar(context)),
-        _titleRow(context, "Viimeisin setti", decoration: false),
-        _latestWorkoutSection()
-      ],
+      ),
     );
   }
 }
