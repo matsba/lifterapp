@@ -158,5 +158,29 @@ class WorkoutCard {
     return "${difference.inMinutes} mins";
   }
 
+  List<List<WorkoutMinimal>> get groupWorkoutsByName {
+    List<List<WorkoutMinimal>> setsGrouped = [];
+    List<WorkoutMinimal> grouped = [];
+
+    for (var i = 0; i < workouts.length; i++) {
+      var current = workouts[i];
+      grouped.add(current);
+
+      if (i + 1 >= workouts.length) {
+        setsGrouped.add([...grouped]);
+        grouped.clear();
+        break;
+      }
+
+      var next = workouts[i + 1];
+
+      if (current.name != next.name) {
+        setsGrouped.add([...grouped]);
+        grouped.clear();
+      }
+    }
+    return setsGrouped;
+  }
+
   WorkoutCard({required this.date, required this.workouts});
 }
