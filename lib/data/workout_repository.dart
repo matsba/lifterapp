@@ -36,6 +36,14 @@ class WorkoutRepository {
     return queryResult.map((e) => WorkoutGroup.fromMap(e)).toList();
   }
 
+  Future<List<String>> getWorkoutNames() async {
+    final Database dbContact = await _db;
+    final List<Map<String, Object?>> queryResult = await dbContact.rawQuery(
+        """SELECT DISTINCT name FROM workouts WHERE name != "" AND name IS NOT NULL ORDER BY name ASC""");
+
+    return queryResult.map((e) => e["name"].toString()).toList();
+  }
+
   Future<WorkoutGroup?> getLatestGroup() async {
     final Database dbContact = await _db;
     final List<Map<String, Object?>> queryResult = await dbContact.rawQuery(

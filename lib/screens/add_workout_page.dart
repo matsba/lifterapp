@@ -39,18 +39,37 @@ class AddWorkoutPage extends StatelessWidget {
   const AddWorkoutPage({Key? key}) : super(key: key);
 
   Widget _inputWorkoutName() {
-    return StoreConnector<AppState, _FormInputViewModel<String>>(
-        converter: (store) => _FormInputViewModel(
+    return StoreConnector<AppState, _TextAutocompleteViewModel<String>>(
+        converter: (store) => _TextAutocompleteViewModel(
+            store.state.workoutNames,
             store.state.workoutFormInput.name,
             (value) =>
                 store.dispatch(UpdateWorkoutFormInputAction({"name": value}))),
         builder: (context, vm) {
           return Column(
             children: [
-              TextField(
-                onChanged: vm.updateValue,
-                //TODO: Säilytä teksti kun käyttäjä poistuu sivulta
-              ),
+              Autocomplete<String>(
+                optionsBuilder: (TextEditingValue textEditingValue) {
+                  if (textEditingValue.text == '') {
+                    return const Iterable<String>.empty();
+                  }
+                  return vm.names.where((String option) {
+                    return option.contains(textEditingValue.text.toLowerCase());
+                  });
+                },
+                onSelected: vm.updateValue,
+                initialValue: TextEditingValue(text: vm.value),
+                fieldViewBuilder: (BuildContext context,
+                    TextEditingController fieldTextEditingController,
+                    FocusNode fieldFocusNode,
+                    VoidCallback onFieldSubmitted) {
+                  return TextField(
+                    controller: fieldTextEditingController,
+                    focusNode: fieldFocusNode,
+                    onChanged: vm.updateValue,
+                  );
+                },
+              )
             ],
           );
         });
@@ -256,6 +275,13 @@ class AddWorkoutPage extends StatelessWidget {
       ),
     );
   }
+}
+
+class _TextAutocompleteViewModel<T> extends _FormInputViewModel {
+  final List<String> names;
+
+  _TextAutocompleteViewModel(this.names, value, updateValue)
+      : super(value, updateValue);
 }
 
 class _WeigthViewModel<T> extends _FormInputViewModel {
