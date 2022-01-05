@@ -121,16 +121,15 @@ class LogPage extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          constraints: BoxConstraints(maxHeight: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Icon(Icons.save_outlined),
               Text(
-                "Tiedosto tallennettu sijaintiin:",
+                "Tiedosto tallennettu!",
                 style: Theme.of(context).textTheme.headline4,
-              ),
-              Text(
-                filePath,
               )
             ],
           ),
@@ -143,9 +142,10 @@ class LogPage extends StatelessWidget {
   Widget _importExportSection(BuildContext context, List<Workout> log) {
     return Row(
       children: [
-        IconButton(
+        const IconButton(
           icon: Icon(Icons.upload),
-          onPressed: () => print("Not implemented upload"),
+          onPressed: null, //TODO: implement import
+          disabledColor: Colors.black26,
         ),
         IconButton(
           icon: Icon(Icons.download),

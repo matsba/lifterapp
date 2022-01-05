@@ -32,15 +32,18 @@ class GlobalTheme {
           fontWeight: FontWeight.bold),
     ),
 
+    sliderTheme: const SliderThemeData(valueIndicatorColor: primaryColorAccent),
+
     switchTheme: SwitchThemeData(
         trackColor:
             MaterialStateProperty.all(primaryColorDark.withOpacity(0.5)),
         thumbColor: MaterialStateProperty.all(primaryColorDark),
         overlayColor: MaterialStateProperty.all(primaryColorAccent)),
 
-    snackBarTheme: SnackBarThemeData(backgroundColor: primaryColorAccent),
-    pageTransitionsTheme: PageTransitionsTheme(builders: {
-      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+    snackBarTheme: const SnackBarThemeData(backgroundColor: primaryColorAccent),
+
+    pageTransitionsTheme: const PageTransitionsTheme(builders: {
+      TargetPlatform.android: const CupertinoPageTransitionsBuilder(),
     }),
     // Define the default font family.
     fontFamily: 'WorkSans',

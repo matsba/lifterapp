@@ -48,6 +48,9 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return navbar != null ? _scaffoldWithNavbar() : _scaffoldWithoutNavbar();
+    return GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child:
+            navbar != null ? _scaffoldWithNavbar() : _scaffoldWithoutNavbar());
   }
 }

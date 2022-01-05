@@ -122,10 +122,46 @@ class AddWorkoutPage extends StatelessWidget {
         });
   }
 
+  Widget _weigthManualInputField(double sliderValue,
+      void Function(double) updateValue, double minValue, double maxValue) {
+    TextEditingController fieldTextEditingController =
+        TextEditingController(text: sliderValue.toString());
+
+    return SizedBox(
+      width: maxValue.toString().length * 10.0,
+      child: TextField(
+        textAlign: TextAlign.center,
+        controller: fieldTextEditingController,
+        keyboardType: TextInputType.number,
+        onSubmitted: (value) {
+          double? converted = double.tryParse(value);
+
+          //check that value is double
+          if (converted == null) {
+            return updateValue(0.0);
+          }
+
+          //Check for slider min and max values and default to them if submitted value is bigger
+          if (converted >= minValue && converted <= maxValue) {
+            return updateValue(converted);
+          }
+
+          if (converted < minValue) {
+            return updateValue(minValue);
+          }
+
+          if (converted > maxValue) {
+            return updateValue(maxValue);
+          }
+        },
+      ),
+    );
+  }
+
   Widget _sliderInput(Widget title) {
     double roundToClosestHalf(value) => ((value * 2).roundToDouble() / 2);
     const double minValue = 0;
-    const double maxValue = 100;
+    const double maxValue = 200;
     final int divisionToTwoAndHalf = (maxValue * 0.4).round();
 
     return StoreConnector<AppState, _WeigthViewModel<double>>(
@@ -152,7 +188,9 @@ class AddWorkoutPage extends StatelessWidget {
                 ),
               ],
             ),
-            if (showSlider) Text("${vm.value} kg"),
+            if (showSlider)
+              _weigthManualInputField(
+                  vm.value, vm.updateValue, minValue, maxValue),
             if (showSlider)
               Slider(
                   value: vm.value ?? 0,
