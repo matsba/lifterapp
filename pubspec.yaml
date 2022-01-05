@@ -46,6 +46,8 @@ dependencies:
       url: https://github.com/leonardo2204/flutter_redux_navigation.git
       ref: fix-nav-destination
   package_info_plus: ^1.3.0
+  flutter_file_dialog: 2.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
