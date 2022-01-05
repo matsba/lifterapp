@@ -80,40 +80,52 @@ class LogPage extends StatelessWidget {
     return log.map((x) => _workoutLogRow(x, menuCallback)).toList();
   }
 
-  Widget _workoutLog(context) {
-    return StoreConnector<AppState, List<Workout>>(
-        converter: (store) => store.state.rawWorkouts,
-        builder: (context, log) {
-          return DataTable(
-            columns: const [
-              DataColumn(label: Text("Aika")),
-              DataColumn(label: Text("Harjoitus")),
-              DataColumn(label: Text("Toistot")),
-              DataColumn(label: Text("Paino")),
-            ],
-            rows: _generateRows(log.reversed.toList(),
-                (Workout workout) => _showLogRowMenu(context, workout)),
-            columnSpacing: 8.0,
-            dataRowHeight: 30,
-          );
-        });
+  Widget _workoutLog(BuildContext context, List<Workout> log) {
+    return DataTable(
+      columns: const [
+        DataColumn(label: Text("Aika")),
+        DataColumn(label: Text("Harjoitus")),
+        DataColumn(label: Text("Toistot")),
+        DataColumn(label: Text("Paino")),
+      ],
+      rows: _generateRows(log.reversed.toList(),
+          (Workout workout) => _showLogRowMenu(context, workout)),
+      columnSpacing: 8.0,
+      dataRowHeight: 30,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      bodyContent: Column(children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "Treeniloki",
-            style: Theme.of(context).textTheme.headline1,
-          ),
-        ),
-        Align(child: _workoutLog(context), alignment: Alignment.centerLeft),
-        //TODO: Text("Sivun loppu")  pitkä lista ei näy loppuun asti
-      ]),
-      expanded: true,
+      bodyContent: StoreConnector<AppState, List<Workout>>(
+          converter: (store) => store.state.rawWorkouts,
+          builder: (context, log) {
+            return SingleChildScrollView(
+              child: Container(
+                height: log.length * 40,
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Treeniloki",
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+
+                      _workoutLog(context, log),
+
+                      //TODO: empty state   pitkä lista ei näy loppuun asti
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Center(
+                          child: Text(
+                              "Siinä kaikki ${log.length} treeniä... 🥵")), //TODO: rajoita tätä jos suorituskyky onglaa pitkän listan kanssa
+                    ]),
+              ),
+            );
+          }),
     );
   }
 }
