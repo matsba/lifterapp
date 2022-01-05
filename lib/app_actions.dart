@@ -9,12 +9,13 @@ class InsertWorkoutAction {
 
   get getLatestWorkoutGroup => latestWorkoutGroup;
   get getWorkoutGroups => workoutGroups;
+  get getWorkoutNames => log.map((e) => e.name).toSet().toList();
 
   InsertWorkoutAction(
       this.latestWorkoutGroup, this.workoutGroups, this.log, this.cards);
 }
 
-class DeletetWorkoutAction {
+class DeleteWorkoutAction {
   final WorkoutGroup? latestWorkoutGroup;
   final List<WorkoutGroup> workoutGroups;
   final List<Workout> log;
@@ -22,8 +23,9 @@ class DeletetWorkoutAction {
 
   get getLatestWorkoutGroup => latestWorkoutGroup;
   get getWorkoutGroups => workoutGroups;
+  get getWorkoutNames => log.map((e) => e.name).toSet().toList();
 
-  DeletetWorkoutAction(
+  DeleteWorkoutAction(
       this.latestWorkoutGroup, this.workoutGroups, this.log, this.cards);
 }
 
@@ -49,4 +51,10 @@ class GetWorkoutLogAction {
   final List<Workout> workouts;
 
   GetWorkoutLogAction(this.workouts);
+}
+
+class GetWorkoutNamesAction {
+  final List<String> names;
+
+  GetWorkoutNamesAction(this.names);
 }

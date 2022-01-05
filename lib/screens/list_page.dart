@@ -1,18 +1,16 @@
-import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:flutter/material.dart' hide NavigationDestination;
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:lifterapp/app_middleware.dart';
 import 'package:lifterapp/app_state.dart';
-import 'package:lifterapp/components/app_scaffold.dart';
-import 'package:lifterapp/components/bottom_navigationbar.dart';
-import 'package:lifterapp/models/workout.dart'
-    show WorkoutCard, WorkoutGroup, WorkoutMinimal;
+import 'package:lifterapp/models/workout.dart' show WorkoutCard, WorkoutMinimal;
 
 class ListPage extends StatelessWidget {
   Widget _buildWorkoutCardList(
       BuildContext context, int i, List<WorkoutCard> cards) {
     WorkoutCard card = cards[i];
+    List<List<WorkoutMinimal>> groups =
+        card.groupWorkoutsByName.reversed.toList();
     int cardNumber = cards.length - i;
 
     return Container(
@@ -30,10 +28,9 @@ class ListPage extends StatelessWidget {
                 ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: card.workouts.length,
+                  itemCount: groups.length,
                   itemBuilder: (BuildContext context, int index) =>
-                      _buildWorkoutList(
-                          context, index, card.workouts.reversed.toList()),
+                      _buildWorkoutList(context, index, groups),
                 )
               ]),
               Container(
@@ -52,8 +49,16 @@ class ListPage extends StatelessWidget {
   }
 
   Widget _buildWorkoutList(
-      BuildContext context, int i, List<WorkoutMinimal> workouts) {
-    WorkoutMinimal details = workouts[i];
+      BuildContext context, int i, List<List<WorkoutMinimal>> workouts) {
+    List<WorkoutMinimal> details = workouts[i].reversed.toList();
+
+    var baseTitle = details.map((x) => Text(x.setsRepsWeigth)).toList();
+    baseTitle.insert(
+        0,
+        Text(
+          details.first.name,
+          style: Theme.of(context).textTheme.headline4,
+        ));
 
     return ListTile(
         leading: CircleAvatar(
@@ -65,9 +70,15 @@ class ListPage extends StatelessWidget {
             style: TextStyle(color: Theme.of(context).colorScheme.secondary),
           ),
         ),
-        title: Text("${details.name} ${details.setsRepsWeigth}"),
+        isThreeLine: true,
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: baseTitle),
+        ),
         subtitle: Text(
-            "${DateFormat.Hm().format(details.firstTimestamp).toString()} - ${DateFormat.Hm().format(details.lastTimestamp).toString()}"));
+            "${DateFormat.Hm().format(details.first.firstTimestamp).toString()} - ${DateFormat.Hm().format(details.last.lastTimestamp).toString()}"));
   }
 
   Widget _workoutCardsList() {
@@ -75,21 +86,28 @@ class ListPage extends StatelessWidget {
         converter: (store) => _WorkoutCardListViewModel(
             store.state.workoutCards, () => store.dispatch(getWorkoutCards())),
         builder: (context, vm) {
-          return ListView.builder(
-            //scrollDirection: Axis.vertical,
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: vm.cards.length,
-            itemBuilder: (BuildContext context, int index) =>
-                _buildWorkoutCardList(context, index, vm.cards),
-            //dragStartBehavior: DragStartBehavior.down,
-          );
+          if (vm.cards.isNotEmpty) {
+            return ListView.builder(
+                //scrollDirection: Axis.vertical,
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: vm.cards.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    _buildWorkoutCardList(context, index, vm.cards)
+                //dragStartBehavior: DragStartBehavior.down,
+                );
+          } else {
+            return Expanded(
+                child: Text("Ei treenejä vielä!")); //TODO: empty state
+          }
         });
   }
 
   @override
   Widget build(BuildContext context) {
-    return _workoutCardsList();
+    return SingleChildScrollView(
+        child: Container(
+            padding: const EdgeInsets.all(16.0), child: _workoutCardsList()));
   }
 }
 

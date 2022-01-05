@@ -1,11 +1,11 @@
 import 'package:lifterapp/app_actions.dart'
     show
-        DeletetWorkoutAction,
+        DeleteWorkoutAction,
         GetLatestWorkoutGroupAction,
         GetWorkoutCardsAction,
         GetWorkoutLogAction,
+        GetWorkoutNamesAction,
         InsertWorkoutAction,
-        NavigateWithNavbarAction,
         UpdateWorkoutFormInputAction;
 import 'package:lifterapp/app_state.dart' show AppState;
 
@@ -16,7 +16,17 @@ AppState reducer(AppState state, dynamic action) {
         workouts: state.workouts,
         workoutFormInput: state.workoutFormInput,
         workoutCards: state.workoutCards,
-        rawWorkouts: state.rawWorkouts);
+        rawWorkouts: state.rawWorkouts,
+        workoutNames: state.workoutNames);
+  }
+  if (action is GetWorkoutNamesAction) {
+    return AppState(
+        latestWorkout: state.latestWorkout,
+        workouts: state.workouts,
+        workoutFormInput: state.workoutFormInput,
+        workoutCards: state.workoutCards,
+        rawWorkouts: state.rawWorkouts,
+        workoutNames: action.names);
   }
   if (action is GetWorkoutLogAction) {
     return AppState(
@@ -24,7 +34,8 @@ AppState reducer(AppState state, dynamic action) {
         workouts: state.workouts,
         workoutFormInput: state.workoutFormInput,
         workoutCards: state.workoutCards,
-        rawWorkouts: action.workouts);
+        rawWorkouts: action.workouts,
+        workoutNames: state.workoutNames);
   }
   if (action is GetWorkoutCardsAction) {
     return AppState(
@@ -32,23 +43,27 @@ AppState reducer(AppState state, dynamic action) {
         workouts: state.workouts,
         workoutFormInput: state.workoutFormInput,
         workoutCards: action.cards,
-        rawWorkouts: state.rawWorkouts);
+        rawWorkouts: state.rawWorkouts,
+        workoutNames: state.workoutNames);
   }
   if (action is InsertWorkoutAction) {
     return AppState(
-        latestWorkout: action.getLatestWorkoutGroup,
-        workouts: action.getWorkoutGroups,
-        workoutFormInput: state.workoutFormInput,
-        workoutCards: action.cards,
-        rawWorkouts: action.log);
+      latestWorkout: action.getLatestWorkoutGroup,
+      workouts: action.getWorkoutGroups,
+      workoutFormInput: state.workoutFormInput,
+      workoutCards: action.cards,
+      rawWorkouts: action.log,
+      workoutNames: action.getWorkoutNames,
+    );
   }
-  if (action is DeletetWorkoutAction) {
+  if (action is DeleteWorkoutAction) {
     return AppState(
         latestWorkout: action.getLatestWorkoutGroup,
         workouts: action.getWorkoutGroups,
         workoutFormInput: state.workoutFormInput,
         workoutCards: action.cards,
-        rawWorkouts: action.log);
+        rawWorkouts: action.log,
+        workoutNames: action.getWorkoutNames);
   }
   if (action is UpdateWorkoutFormInputAction) {
     var form = state.workoutFormInput
@@ -59,7 +74,8 @@ AppState reducer(AppState state, dynamic action) {
         workouts: state.workouts,
         workoutFormInput: form,
         workoutCards: state.workoutCards,
-        rawWorkouts: state.rawWorkouts);
+        rawWorkouts: state.rawWorkouts,
+        workoutNames: state.workoutNames);
   }
 
   return state;

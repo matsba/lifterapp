@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide NavigationDestination;
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:lifterapp/app_middleware.dart'
-    show getLatestWorkoutGroup, getWorkoutCards, getWorkoutLog;
+    show getLatestWorkoutGroup, getWorkoutCards, getWorkoutLog, getWorkoutNames;
 import 'package:lifterapp/app_reducer.dart';
 import 'package:lifterapp/app_state.dart' show AppState;
 import 'package:lifterapp/screens/home_page.dart' show HomePage;
@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
     store.dispatch(getLatestWorkoutGroup());
     store.dispatch(getWorkoutCards());
     store.dispatch(getWorkoutLog());
+    store.dispatch(getWorkoutNames());
     return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
             // Manage your route names here
             switch (settings.name) {
               case '/':
-                builder = (BuildContext context) => HomePage();
+                builder = (BuildContext context) => const HomePage();
                 break;
               case '/list':
                 builder = (BuildContext context) => ListPage();

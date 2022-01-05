@@ -7,6 +7,7 @@ class AppState {
   final List<Workout> rawWorkouts;
   final List<WorkoutCard> workoutCards;
   final WorkoutFormInput workoutFormInput;
+  final List<String> workoutNames;
   //List<Workout> get workouts => _workouts;
 
   AppState(
@@ -14,12 +15,14 @@ class AppState {
       required this.workouts,
       required this.workoutCards,
       required this.workoutFormInput,
-      required this.rawWorkouts});
+      required this.rawWorkouts,
+      required this.workoutNames});
 
   AppState.initialState()
       : workouts = [],
         latestWorkout = null,
         workoutFormInput = WorkoutFormInput(),
         workoutCards = [],
-        rawWorkouts = [];
+        rawWorkouts = [],
+        workoutNames = [""];
 }
