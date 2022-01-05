@@ -109,7 +109,7 @@ packages:
     description:
       path: "."
       ref: fix-nav-destination
-      resolved-ref: "93dc72358edf2b8a4cc907f3b7912cdd339f51e6"
+      resolved-ref: "303523ebec91ad0390642e919a86108d2227b4a3"
       url: "https://github.com/leonardo2204/flutter_redux_navigation.git"
     source: git
     version: "0.7.0"
