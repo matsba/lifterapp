@@ -3,20 +3,10 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:lifterapp/app_state.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MoreMenu extends StatelessWidget {
   const MoreMenu({Key? key}) : super(key: key);
-
-  PopupMenuItem _workoutLogLink(BuildContext context, int value) {
-    return PopupMenuItem(
-        child: _popUpMenuItemRow(
-            text: "Treeniloki",
-            icon: Icon(
-              Icons.list_alt_outlined,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            value: value));
-  }
 
   Widget _moreButton() {
     return StoreConnector<AppState, void Function()>(
@@ -25,14 +15,26 @@ class MoreMenu extends StatelessWidget {
         builder: (context, navigateToLog) {
           return PopupMenuButton(
               padding: EdgeInsets.all(0),
-              onSelected: (result) {
-                if (result == 1) {
-                  navigateToLog();
+              onSelected: (result) async {
+                switch (result) {
+                  case 1:
+                    navigateToLog();
+                    break;
+                  case 2:
+                    showLicensePage(context: context);
+                    break;
+                  case 3:
+                    await launch("https://github.com/matsba/lifterapp/releases",
+                        forceSafariVC: false);
+                    break;
+                  default:
                 }
               },
               itemBuilder: (context) => [
                     _workoutLogLink(context, 1),
-                    _appVersionText(context, 2),
+                    _menuDivider(),
+                    _appLicensesLink(context, 2),
+                    _appVersionText(context, 3),
                   ]);
         });
   }
@@ -46,6 +48,26 @@ class MoreMenu extends StatelessWidget {
           SizedBox(width: 8.0),
           Text(text),
         ]));
+  }
+
+  PopupMenuItem _menuDivider() {
+    return const PopupMenuItem(
+      child: Divider(
+        thickness: 1.5,
+      ),
+      height: 6,
+    );
+  }
+
+  PopupMenuItem _workoutLogLink(BuildContext context, int value) {
+    return PopupMenuItem(
+        child: _popUpMenuItemRow(
+            text: "Treeniloki",
+            icon: Icon(
+              Icons.list_alt_outlined,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            value: value));
   }
 
   PopupMenuItem _appVersionText(BuildContext context, int value) {
@@ -66,6 +88,17 @@ class MoreMenu extends StatelessWidget {
                         text: "",
                         value: 2,
                       )));
+  }
+
+  PopupMenuItem _appLicensesLink(BuildContext context, int value) {
+    return PopupMenuItem(
+        child: _popUpMenuItemRow(
+            text: "Lisenssit",
+            icon: Icon(
+              Icons.copyright,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            value: value));
   }
 
   @override
