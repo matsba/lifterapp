@@ -127,34 +127,40 @@ class AddWorkoutPage extends StatelessWidget {
     TextEditingController fieldTextEditingController =
         TextEditingController(text: sliderValue.toString());
 
-    return SizedBox(
-      width: maxValue.toString().length * 10.0,
-      child: TextField(
-        textAlign: TextAlign.center,
-        controller: fieldTextEditingController,
-        keyboardType: TextInputType.number,
-        onSubmitted: (value) {
-          double? converted = double.tryParse(value);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: maxValue.toString().length * 10.0,
+          child: TextField(
+            textAlign: TextAlign.center,
+            controller: fieldTextEditingController,
+            keyboardType: TextInputType.number,
+            onSubmitted: (value) {
+              double? converted = double.tryParse(value);
 
-          //check that value is double
-          if (converted == null) {
-            return updateValue(0.0);
-          }
+              //check that value is double
+              if (converted == null) {
+                return updateValue(0.0);
+              }
 
-          //Check for slider min and max values and default to them if submitted value is bigger
-          if (converted >= minValue && converted <= maxValue) {
-            return updateValue(converted);
-          }
+              //Check for slider min and max values and default to them if submitted value is bigger
+              if (converted >= minValue && converted <= maxValue) {
+                return updateValue(converted);
+              }
 
-          if (converted < minValue) {
-            return updateValue(minValue);
-          }
+              if (converted < minValue) {
+                return updateValue(minValue);
+              }
 
-          if (converted > maxValue) {
-            return updateValue(maxValue);
-          }
-        },
-      ),
+              if (converted > maxValue) {
+                return updateValue(maxValue);
+              }
+            },
+          ),
+        ),
+        Text("kg")
+      ],
     );
   }
 
