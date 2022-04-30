@@ -15,6 +15,20 @@ class InsertWorkoutAction {
       this.latestWorkoutGroup, this.workoutGroups, this.log, this.cards);
 }
 
+class ImportWorkoutListAction {
+  final WorkoutGroup? latestWorkoutGroup;
+  final List<WorkoutGroup> workoutGroups;
+  final List<Workout> log;
+  List<WorkoutCard> cards;
+
+  get getLatestWorkoutGroup => latestWorkoutGroup;
+  get getWorkoutGroups => workoutGroups;
+  get getWorkoutNames => log.map((e) => e.name).toSet().toList();
+
+  ImportWorkoutListAction(
+      this.latestWorkoutGroup, this.workoutGroups, this.log, this.cards);
+}
+
 class DeleteWorkoutAction {
   final WorkoutGroup? latestWorkoutGroup;
   final List<WorkoutGroup> workoutGroups;

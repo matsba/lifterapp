@@ -16,6 +16,18 @@ class WorkoutRepository {
     return result;
   }
 
+  Future<void> replaceAllWorkoutsWithList(List<Workout> workouts) async {
+    final Database dbContact = await _db;
+    await dbContact.transaction((txn) async {
+      final batch = txn.batch();
+      dbContact.delete('workouts');
+      for (var workout in workouts) {
+        dbContact.insert('workouts', workout.toMap());
+      }
+      await batch.commit();
+    });
+  }
+
   Future<List<Workout>> getAll() async {
     final Database dbContact = await _db;
     final List<Map<String, Object?>> queryResult =
