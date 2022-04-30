@@ -111,15 +111,21 @@ class LogPage extends StatelessWidget {
   }
 
   Future<void> _importData(BuildContext context, Function callback) async {
-    final params = OpenFileDialogParams(
-        dialogType:
-            OpenFileDialogType.document /* , mimeTypesFilter: ["text/csv"] */);
+    final params =
+        OpenFileDialogParams(dialogType: OpenFileDialogType.document);
     final filePath = await FlutterFileDialog.pickFile(params: params);
     print("Loading file from $filePath");
     if (filePath == null || filePath.isEmpty) {
       return;
     }
     final file = File(filePath);
+    final fileType = filePath.substring(file.path.length - 4);
+    print(fileType);
+
+    if (fileType != ".csv") {
+      _showImportSnackBarFailed(context, "Vain .csv tiedostot sallittu");
+      return;
+    }
     final List<String> rawWorkoutList = await file.readAsLines();
 
     print("File has ${rawWorkoutList.length} rows");
@@ -136,10 +142,11 @@ class LogPage extends StatelessWidget {
     print("Converted to workout objects");
 
     try {
+      //TODO: Implement error handling for dispatching events. See example: https://github.com/fluttercommunity/redux.dart/blob/master/doc/async.md
       await callback(workouts);
       _showImportSnackBarSuccess(context, workouts.length - 1);
     } catch (e) {
-      _showImportSnackBarFailed(context);
+      _showImportSnackBarFailed(context, "Tietokanta virhe");
     }
   }
 
@@ -212,21 +219,26 @@ class LogPage extends StatelessWidget {
     );
   }
 
-  void _showImportSnackBarFailed(BuildContext context) {
+  void _showImportSnackBarFailed(BuildContext context, String errorText) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.redAccent,
         content: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          constraints: BoxConstraints(maxHeight: 40),
+          child: Column(
             children: [
-              Icon(Icons.error),
-              Text(
-                "Tiedoston tuonti epäonnistui!",
-                style: Theme.of(context).textTheme.headline4,
-              )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.error),
+                  Text(
+                    "Tiedoston tuonti epäonnistui!",
+                    style: Theme.of(context).textTheme.headline4,
+                  )
+                ],
+              ),
+              Text(errorText),
             ],
           ),
         ),
