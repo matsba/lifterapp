@@ -1,12 +1,4 @@
-import 'package:lifterapp/app_actions.dart'
-    show
-        DeleteWorkoutAction,
-        GetLatestWorkoutGroupAction,
-        GetWorkoutCardsAction,
-        GetWorkoutLogAction,
-        GetWorkoutNamesAction,
-        InsertWorkoutAction,
-        UpdateWorkoutFormInputAction;
+import 'package:lifterapp/app_actions.dart';
 import 'package:lifterapp/app_state.dart' show AppState;
 
 AppState reducer(AppState state, dynamic action) {
@@ -76,6 +68,16 @@ AppState reducer(AppState state, dynamic action) {
         workoutCards: state.workoutCards,
         rawWorkouts: state.rawWorkouts,
         workoutNames: state.workoutNames);
+  }
+  if (action is ImportWorkoutListAction) {
+    return AppState(
+      latestWorkout: action.getLatestWorkoutGroup,
+      workouts: action.getWorkoutGroups,
+      workoutFormInput: state.workoutFormInput,
+      workoutCards: action.cards,
+      rawWorkouts: action.log,
+      workoutNames: action.getWorkoutNames,
+    );
   }
 
   return state;

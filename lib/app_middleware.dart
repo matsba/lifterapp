@@ -32,6 +32,19 @@ ThunkAction<AppState> insertWorkout(WorkoutFormInput workout) {
   };
 }
 
+ThunkAction<AppState> importWorkoutList(List<Workout> workoutsList) {
+  return (Store<AppState> store) async {
+    print("Replacing workouts with new ${workoutsList.length} workouts.");
+    await repository.replaceAllWorkoutsWithList(workoutsList);
+    print("Done. Getting updated data");
+    var workouts = await repository.getAllGroups();
+    var latest = await repository.getLatestGroup();
+    var cards = await repository.getAllCards();
+    var log = await repository.getAll();
+    store.dispatch(InsertWorkoutAction(latest, workouts, log, cards));
+  };
+}
+
 ThunkAction<AppState> getLatestWorkoutGroup() {
   return (Store<AppState> store) async {
     var latest = await repository.getLatestGroup();
