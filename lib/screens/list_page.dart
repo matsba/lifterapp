@@ -3,14 +3,16 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:lifterapp/app_middleware.dart';
 import 'package:lifterapp/app_state.dart';
-import 'package:lifterapp/models/workout.dart' show WorkoutCard, WorkoutMinimal;
+import 'package:lifterapp/components/info_text.dart';
+import 'package:lifterapp/components/title_row.dart';
+import 'package:lifterapp/models/workout.dart'
+    show WorkoutCard, WorkoutGroup, WorkoutMinimal, WorkoutNameGroup;
 
 class ListPage extends StatelessWidget {
   Widget _buildWorkoutCardList(
       BuildContext context, int i, List<WorkoutCard> cards) {
     WorkoutCard card = cards[i];
-    List<List<WorkoutMinimal>> groups =
-        card.groupWorkoutsByName.reversed.toList();
+    List<WorkoutNameGroup> groups = card.groupWorkoutsByName.reversed.toList();
     int cardNumber = cards.length - i;
 
     return Container(
@@ -35,9 +37,18 @@ class ListPage extends StatelessWidget {
               ]),
               Container(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Icon(Icons.timer),
-                    Text("Kesto: ${card.duration}")
+                    Row(
+                      children: [
+                        const Icon(Icons.timer),
+                        SizedBox(
+                          width: 3,
+                        ),
+                        Text("Kesto: ${card.duration}"),
+                      ],
+                    ),
+                    Text("Kuorma: ${card.overallVolume.toStringAsFixed(0)}")
                   ],
                 ),
                 padding: EdgeInsets.all(10),
@@ -49,16 +60,8 @@ class ListPage extends StatelessWidget {
   }
 
   Widget _buildWorkoutList(
-      BuildContext context, int i, List<List<WorkoutMinimal>> workouts) {
-    List<WorkoutMinimal> details = workouts[i].reversed.toList();
-
-    var baseTitle = details.map((x) => Text(x.setsRepsWeigth)).toList();
-    baseTitle.insert(
-        0,
-        Text(
-          details.first.name,
-          style: Theme.of(context).textTheme.headline4,
-        ));
+      BuildContext context, int i, List<WorkoutNameGroup> group) {
+    WorkoutNameGroup nameGroup = group[i];
 
     return ListTile(
         leading: CircleAvatar(
@@ -73,12 +76,23 @@ class ListPage extends StatelessWidget {
         isThreeLine: true,
         title: Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: baseTitle),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            TitleRow(
+              nameGroup.name,
+            ),
+            ...nameGroup.workouts.map((x) => Text(x.setFormat)).toList(),
+          ]),
         ),
-        subtitle: Text(
-            "${DateFormat.Hm().format(details.first.firstTimestamp).toString()} - ${DateFormat.Hm().format(details.last.lastTimestamp).toString()}"));
+        subtitle: Column(
+          children: [
+            InfoText(
+              "= ${nameGroup.trainingVolume.toStringAsFixed(0)} kuorma",
+            ),
+            InfoText(
+                "${DateFormat.Hm().format(nameGroup.workouts.first.firstTimestamp).toString()} - ${DateFormat.Hm().format(nameGroup.workouts.last.lastTimestamp).toString()}"),
+          ],
+        ));
   }
 
   Widget _workoutCardsList() {

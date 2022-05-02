@@ -1,5 +1,4 @@
-import 'package:lifterapp/models/workout.dart'
-    show Workout, WorkoutCard, WorkoutGroup;
+import 'package:lifterapp/models/workout.dart';
 
 class InsertWorkoutAction {
   final WorkoutGroup? latestWorkoutGroup;
@@ -49,6 +48,18 @@ class GetLatestWorkoutGroupAction {
   GetLatestWorkoutGroupAction(this.latestWorkoutGroup);
 }
 
+class GetOrdinalWorkoutVolumesAction {
+  final List<OridnalWorkoutVolumes> ordinalWorkoutVolumes;
+
+  GetOrdinalWorkoutVolumesAction(this.ordinalWorkoutVolumes);
+}
+
+class GetMonthWorkoutVolumeStatisticsAction {
+  MonthWorkoutVolumeStatistics workoutVolumeStatistics;
+
+  GetMonthWorkoutVolumeStatisticsAction(this.workoutVolumeStatistics);
+}
+
 class UpdateWorkoutFormInputAction {
   final Map<String, dynamic> input;
 
@@ -71,4 +82,16 @@ class GetWorkoutNamesAction {
   final List<String> names;
 
   GetWorkoutNamesAction(this.names);
+}
+
+class GetWorkoutNamesWithouBodyWeigthAction {
+  final List<String> names;
+
+  GetWorkoutNamesWithouBodyWeigthAction(this.names);
+}
+
+class GetYearWorkoutActivityAction {
+  final List<int> yearWorkoutActivity;
+
+  GetYearWorkoutActivityAction(this.yearWorkoutActivity);
 }

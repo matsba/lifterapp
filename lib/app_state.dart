@@ -1,5 +1,4 @@
-import 'package:lifterapp/models/workout.dart'
-    show Workout, WorkoutCard, WorkoutFormInput, WorkoutGroup;
+import 'package:lifterapp/models/workout.dart';
 
 class AppState {
   final WorkoutGroup? latestWorkout;
@@ -8,7 +7,10 @@ class AppState {
   final List<WorkoutCard> workoutCards;
   final WorkoutFormInput workoutFormInput;
   final List<String> workoutNames;
-  //List<Workout> get workouts => _workouts;
+  final List<String> workoutNamesWithoutBodyWeigth;
+  final List<OridnalWorkoutVolumes> ordinalWorkoutVolumes;
+  final MonthWorkoutVolumeStatistics workoutVolumeStatistics;
+  final List<int> yearWorkoutActivity;
 
   AppState(
       {required this.latestWorkout,
@@ -16,7 +18,11 @@ class AppState {
       required this.workoutCards,
       required this.workoutFormInput,
       required this.rawWorkouts,
-      required this.workoutNames});
+      required this.workoutNames,
+      required this.workoutNamesWithoutBodyWeigth,
+      required this.ordinalWorkoutVolumes,
+      required this.workoutVolumeStatistics,
+      required this.yearWorkoutActivity});
 
   AppState.initialState()
       : workouts = [],
@@ -24,5 +30,10 @@ class AppState {
         workoutFormInput = WorkoutFormInput(),
         workoutCards = [],
         rawWorkouts = [],
-        workoutNames = [""];
+        workoutNames = [],
+        workoutNamesWithoutBodyWeigth = [],
+        ordinalWorkoutVolumes = [],
+        workoutVolumeStatistics =
+            MonthWorkoutVolumeStatistics(acuteLoad: null, chronicLoad: null),
+        yearWorkoutActivity = List.filled(52, 0);
 }

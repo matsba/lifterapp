@@ -3,6 +3,7 @@ import 'package:lifterapp/components/app_scaffold.dart';
 import 'package:lifterapp/components/bottom_navigationbar.dart';
 import 'package:lifterapp/screens/add_workout_page.dart';
 import 'package:lifterapp/screens/list_page.dart';
+import 'package:lifterapp/screens/stats_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [AddWorkoutPage(), ListPage()];
+  final List<Widget> _pages = [AddWorkoutPage(), ListPage(), StatsPage()];
 
   void _onItemTapped(int index) {
     setState(() {

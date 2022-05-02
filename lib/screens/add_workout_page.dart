@@ -32,6 +32,7 @@ import 'package:lifterapp/app_state.dart' show AppState;
 import 'package:lifterapp/components/app_scaffold.dart';
 import 'package:lifterapp/components/bottom_navigationbar.dart'
     show BottomNavBar;
+import 'package:lifterapp/components/title_row.dart';
 import 'package:lifterapp/models/workout.dart'
     show WorkoutFormInput, WorkoutGroup;
 
@@ -238,7 +239,7 @@ class AddWorkoutPage extends StatelessWidget {
           constraints: BoxConstraints(maxHeight: 110),
           child: Column(
             children: [
-              _titleRow(context, "Lisätty settiin!"),
+              TitleRow("Lisätty settiin!"),
               _latestWorkoutSection(),
             ],
           ),
@@ -275,25 +276,6 @@ class AddWorkoutPage extends StatelessWidget {
         });
   }
 
-  Widget _titleRow(BuildContext context, String title,
-      {bool decoration = true, TextStyle? textStyle}) {
-    const double padding = 8.0;
-
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-          child: Row(
-            children: [
-              Text(
-                title,
-                style: textStyle ?? Theme.of(context).textTheme.headline4,
-              ),
-            ],
-          ),
-          padding: EdgeInsets.only(bottom: padding, top: padding)),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -301,18 +283,16 @@ class AddWorkoutPage extends StatelessWidget {
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _titleRow(context, "Lisää treeni",
-                decoration: false,
-                textStyle: Theme.of(context).textTheme.headline1),
-            _titleRow(context, "Harjoitus", decoration: false),
+            TitleRow("Lisää treeni", isHeading: true),
+            TitleRow("Harjoitus"),
             _inputWorkoutName(),
-            _titleRow(context, "Toistot", decoration: false),
+            TitleRow("Toistot"),
             _inputGridButtonNumberInput(20, context),
             _sliderInput(
-              _titleRow(context, "Paino", decoration: false),
+              TitleRow("Paino"),
             ),
             _submitButton(() => _showSnackBar(context)),
-            _titleRow(context, "Viimeisin setti", decoration: false),
+            TitleRow("Viimeisin setti"),
             _latestWorkoutSection()
           ],
         ),

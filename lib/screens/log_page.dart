@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:lifterapp/app_middleware.dart';
 import 'package:lifterapp/app_state.dart';
 import 'package:lifterapp/components/app_scaffold.dart';
+import 'package:lifterapp/components/title_row.dart';
 import 'package:lifterapp/data/workout_repository.dart';
 import 'package:lifterapp/models/workout.dart';
 
@@ -284,9 +285,9 @@ class LogPage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          TitleRow(
                             "Treeniloki",
-                            style: Theme.of(context).textTheme.headline1,
+                            isHeading: true,
                           ),
                           _importExportSection(context, log)
                         ],

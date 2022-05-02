@@ -1,11 +1,4 @@
-import 'package:lifterapp/app_actions.dart'
-    show
-        DeleteWorkoutAction,
-        GetLatestWorkoutGroupAction,
-        GetWorkoutCardsAction,
-        GetWorkoutLogAction,
-        GetWorkoutNamesAction,
-        InsertWorkoutAction;
+import 'package:lifterapp/app_actions.dart';
 import 'package:lifterapp/app_state.dart' show AppState;
 import 'package:lifterapp/data/workout_repository.dart' show WorkoutRepository;
 import 'package:lifterapp/models/workout.dart' show Workout, WorkoutFormInput;
@@ -70,6 +63,37 @@ ThunkAction<AppState> getWorkoutNames() {
   return (Store<AppState> store) async {
     var names = await repository.getWorkoutNames();
     store.dispatch(GetWorkoutNamesAction(names));
+  };
+}
+
+ThunkAction<AppState> getWorkoutNamesWithouBodyWeigth() {
+  return (Store<AppState> store) async {
+    var names = await repository.getWorkoutNamesWithoutBodyWeigth();
+    store.dispatch(GetWorkoutNamesWithouBodyWeigthAction(names));
+  };
+}
+
+ThunkAction<AppState> getOrdinalWorkoutVolumes(String? filter) {
+  return (Store<AppState> store) async {
+    var data = await repository.getOridnalWorkoutVolumes(filter ?? "Kaikki");
+    if (data == null) {
+      return;
+    }
+    store.dispatch(GetOrdinalWorkoutVolumesAction(data));
+  };
+}
+
+ThunkAction<AppState> getWorkoutVolumeStatistics() {
+  return (Store<AppState> store) async {
+    var data = await repository.getMonthWorkoutStats();
+    store.dispatch(GetMonthWorkoutVolumeStatisticsAction(data));
+  };
+}
+
+ThunkAction<AppState> getYearWorkoutActivity() {
+  return (Store<AppState> store) async {
+    var data = await repository.getYearsWeeklyWorkouts();
+    store.dispatch(GetYearWorkoutActivityAction(data));
   };
 }
 
