@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class WorkoutFormInput {
   String? name;
   int? reps;
@@ -75,7 +77,7 @@ class Workout {
       'id': id,
       'name': name,
       'reps': reps,
-      'weigth': weigth,
+      'weigth': bodyWeigth ? 0 : weigth,
       'timestamp': timestamp.toString(),
       'body_weigth': bodyWeigth ? 1 : 0,
       'year': year,
@@ -99,11 +101,16 @@ class WorkoutGroup {
   String get setFormat =>
       bodyWeigth ? "$sets x $reps" : "$sets x $reps x $weigth kg";
   String get dateFormat => "$day.$month.$year";
+  double get trainingVolume => sets * reps * (bodyWeigth ? 0 : weigth);
 
   List<DateTime> get timestampsInListFormat =>
       timestamps != null && timestamps != ""
           ? timestamps!.split(",").map((x) => DateTime.parse(x)).toList()
           : List.filled(1, DateTime.now());
+
+  DateTime get firstTimestamp => timestampsInListFormat[0];
+  DateTime get lastTimestamp =>
+      timestampsInListFormat[timestampsInListFormat.length - 1];
 
   WorkoutGroup({
     required this.name,
@@ -147,40 +154,93 @@ class WorkoutMinimal {
 
 class WorkoutCard {
   final String date;
-  final List<WorkoutMinimal> workouts;
+  final List<WorkoutGroup> workouts;
 
   String get restingTimeInMinutesAndSeconds => "0:00"; //TODO;
   String get duration {
     List<DateTime> timestamps =
-        workouts.map((x) => x.timestamps).expand((x) => x).toList();
+        workouts.map((x) => x.timestampsInListFormat).expand((x) => x).toList();
     timestamps.sort((a, b) => a.compareTo(b));
     var difference = timestamps.last.difference(timestamps.first);
     return "${difference.inMinutes} mins";
   }
 
-  List<List<WorkoutMinimal>> get groupWorkoutsByName {
-    List<List<WorkoutMinimal>> setsGrouped = [];
-    List<WorkoutMinimal> grouped = [];
+  double get overallVolume =>
+      groupWorkoutsByName.map((e) => e.trainingVolume).reduce((a, b) => a + b);
+
+  List<WorkoutNameGroup> get groupWorkoutsByName {
+    List<WorkoutNameGroup> setsGrouped = [];
+    List<WorkoutGroup> grouped = [];
+    double volume = 0;
+
+    void init() {
+      volume = 0;
+      grouped.clear();
+    }
 
     for (var i = 0; i < workouts.length; i++) {
       var current = workouts[i];
       grouped.add(current);
+      volume = grouped
+          .map((workout) =>
+              workout.sets *
+              workout.reps *
+              (workout.bodyWeigth ? 1 : workout.weigth))
+          .reduce((a, b) => a + b)
+          .toDouble();
 
       if (i + 1 >= workouts.length) {
-        setsGrouped.add([...grouped]);
-        grouped.clear();
+        setsGrouped.add(WorkoutNameGroup(
+            name: current.name,
+            workouts: [...grouped],
+            trainingVolume: volume));
+        init();
         break;
       }
 
       var next = workouts[i + 1];
 
       if (current.name != next.name) {
-        setsGrouped.add([...grouped]);
-        grouped.clear();
+        setsGrouped.add(WorkoutNameGroup(
+            name: current.name,
+            workouts: [...grouped],
+            trainingVolume: volume));
+        init();
       }
     }
     return setsGrouped;
   }
 
   WorkoutCard({required this.date, required this.workouts});
+}
+
+class WorkoutNameGroup {
+  final String name;
+  final List<WorkoutGroup> workouts;
+  final double trainingVolume;
+
+  WorkoutNameGroup(
+      {required this.name,
+      required this.workouts,
+      required this.trainingVolume});
+}
+
+class OridnalWorkoutVolumes {
+  final String name;
+  final String group;
+  final double volume;
+
+  OridnalWorkoutVolumes(this.name, this.group, this.volume);
+}
+
+class MonthWorkoutVolumeStatistics {
+  final double? acuteLoad;
+  final double? chronicLoad;
+
+  double? get ratio => acuteLoad != null && chronicLoad != null
+      ? acuteLoad! / chronicLoad!
+      : null;
+
+  MonthWorkoutVolumeStatistics(
+      {required this.acuteLoad, required this.chronicLoad});
 }

@@ -36,6 +36,10 @@ class BottomNavBar extends StatelessWidget {
               icon: Icon(Icons.list),
               label: 'Lista',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.bar_chart),
+              label: 'Tilastot',
+            ),
           ], currentIndex: selectedIndex, onTap: changePage);
         });
   }

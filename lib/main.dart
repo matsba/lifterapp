@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart' hide NavigationDestination;
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
-import 'package:lifterapp/app_middleware.dart'
-    show getLatestWorkoutGroup, getWorkoutCards, getWorkoutLog, getWorkoutNames;
+import 'package:lifterapp/app_middleware.dart';
 import 'package:lifterapp/app_reducer.dart';
 import 'package:lifterapp/app_state.dart' show AppState;
 import 'package:lifterapp/screens/home_page.dart' show HomePage;
 import 'package:lifterapp/screens/list_page.dart' show ListPage;
 import "package:flutter_redux/flutter_redux.dart" show StoreProvider;
 import 'package:lifterapp/screens/log_page.dart';
+import 'package:lifterapp/screens/stats_page.dart';
 import 'package:lifterapp/theme.dart';
 import 'package:redux/redux.dart' show Store, combineReducers;
 import 'package:redux_thunk/redux_thunk.dart' show thunkMiddleware;
@@ -24,7 +24,11 @@ class MyApp extends StatelessWidget {
     store.dispatch(getLatestWorkoutGroup());
     store.dispatch(getWorkoutCards());
     store.dispatch(getWorkoutLog());
-    store.dispatch(getWorkoutNames());
+    //store.dispatch(getWorkoutNames());
+    store.dispatch(getWorkoutNamesWithouBodyWeigth());
+    store.dispatch(getOrdinalWorkoutVolumes("Kaikki"));
+    store.dispatch(getWorkoutVolumeStatistics());
+    store.dispatch(getYearWorkoutActivity());
     return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
@@ -42,6 +46,9 @@ class MyApp extends StatelessWidget {
                 break;
               case '/log':
                 builder = (BuildContext context) => LogPage();
+                break;
+              case '/stats':
+                builder = (BuildContext context) => StatsPage();
                 break;
               default:
                 throw Exception('Invalid route: ${settings.name}');
