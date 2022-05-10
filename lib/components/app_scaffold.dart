@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
-import 'package:lifterapp/app_state.dart';
-import 'package:lifterapp/components/bottom_navigationbar.dart';
-import 'package:lifterapp/components/more_menu.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:lifterapp/containers/bottom_navigationbar.dart';
+import 'package:lifterapp/containers/more_menu.dart';
 
 class AppScaffold extends StatelessWidget {
   final Widget bodyContent;
@@ -27,7 +23,7 @@ class AppScaffold extends StatelessWidget {
           const Text('Lifter.app'),
         ],
       ),
-      actions: [const MoreMenu()],
+      actions: const [MoreMenu()],
     );
   }
 

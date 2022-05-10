@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class TitleRow extends StatelessWidget {
-  String title;
-  bool isHeading;
+  final String title;
+  final bool isHeading;
 
-  TitleRow(this.title, {this.isHeading = false});
+  const TitleRow(this.title, {Key? key, this.isHeading = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class TitleRow extends StatelessWidget {
               ),
             ],
           ),
-          padding: EdgeInsets.only(bottom: padding, top: padding)),
+          padding: const EdgeInsets.only(bottom: padding, top: padding)),
     );
   }
 }

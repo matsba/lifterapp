@@ -49,6 +49,7 @@ dependencies:
   flutter_file_dialog: 2.1.0
   url_launcher: ^6.0.17
   charts_flutter: ^0.12.0
+  redux_logging: ^0.5.0
 
 dev_dependencies:
   flutter_test:
@@ -105,13 +106,13 @@ flutter:
   fonts:
     - family: WorkSans
       fonts:
-        - asset: lib/fonts/WorkSans-Regular.ttf
-        - asset: lib/fonts/WorkSans-ExtraBold.ttf
+        - asset: lib/assets/fonts/WorkSans-Regular.ttf
+        - asset: lib/assets/fonts/WorkSans-ExtraBold.ttf
           weight: 800
-        - asset: lib/fonts/WorkSans-ExtraBoldItalic.ttf
+        - asset: lib/assets/fonts/WorkSans-ExtraBoldItalic.ttf
           weight: 800
           style: italic
-        - asset: lib/fonts/WorkSans-Italic.ttf
+        - asset: lib/assets/fonts/WorkSans-Italic.ttf
           style: italic
   #
   # For details regarding fonts from package dependencies,
