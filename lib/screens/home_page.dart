@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lifterapp/components/app_scaffold.dart';
-import 'package:lifterapp/components/bottom_navigationbar.dart';
+import 'package:lifterapp/containers/bottom_navigationbar.dart';
 import 'package:lifterapp/screens/add_workout_page.dart';
 import 'package:lifterapp/screens/list_page.dart';
 import 'package:lifterapp/screens/stats_page.dart';
