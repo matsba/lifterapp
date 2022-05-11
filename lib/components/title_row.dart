@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class TitleRow extends StatelessWidget {
   final String title;
   final bool isHeading;
+  final Color? color;
 
-  const TitleRow(this.title, {Key? key, this.isHeading = false})
-      : super(key: key);
+  const TitleRow(this.title, {this.isHeading = false, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +19,14 @@ class TitleRow extends StatelessWidget {
               Text(
                 title,
                 style: isHeading
-                    ? Theme.of(context).textTheme.headline1
-                    : Theme.of(context).textTheme.headline4,
+                    ? Theme.of(context)
+                        .textTheme
+                        .headline1
+                        ?.copyWith(color: color)
+                    : Theme.of(context)
+                        .textTheme
+                        .headline4
+                        ?.copyWith(color: color),
               ),
             ],
           ),

@@ -67,7 +67,7 @@ class _RowSource extends DataTableSource {
   List<Workout> workouts;
   BuildContext context;
 
-  get reversedWorkoutList => workouts.reversed;
+  get reversedWorkoutList => workouts.reversed.toList();
 
   _RowSource({required this.workouts, required this.context});
 

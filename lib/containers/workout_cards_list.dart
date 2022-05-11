@@ -10,7 +10,12 @@ import 'package:lifterapp/selectors/selectors.dart';
 import 'package:redux/redux.dart';
 
 class WorkoutCardsList extends StatelessWidget {
-  const WorkoutCardsList({Key? key}) : super(key: key);
+  final List<String> _cardImages = [
+    "lib/assets/card-1.jpg",
+    "lib/assets/card-2.jpg",
+    "lib/assets/card-3.jpg",
+    "lib/assets/card-4.jpg",
+  ];
 
   Widget _buildWorkoutCardList(
       BuildContext context, int index, List<WorkoutCard> cards) {
@@ -24,10 +29,51 @@ class WorkoutCardsList extends StatelessWidget {
           elevation: 3.0,
           child: Column(
             children: [
-              ListTile(
-                title: TitleRow('Treeni #$cardNumber', isHeading: true),
-                subtitle: Text(card.date),
-              ),
+              Stack(children: [
+                ColorFiltered(
+                  child: Container(
+                    height: 8 * 11,
+                    width: double.infinity,
+                    child: Image.asset(
+                      _cardImages[cardNumber % _cardImages.length],
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.primaryVariant,
+                      BlendMode.color),
+                ),
+                Card(
+                  color: Colors.white,
+                  margin: EdgeInsets.all(8),
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    width: 100,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '#$cardNumber',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline1
+                                ?.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                    shadows: [
+                                  const Shadow(
+                                      color: Colors.black,
+                                      offset: Offset(1, 1),
+                                      blurRadius: 1)
+                                ]),
+                          ),
+                          Text(
+                            card.date,
+                          )
+                        ]),
+                  ),
+                ),
+              ]),
               Column(children: [
                 ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),

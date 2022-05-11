@@ -80,6 +80,10 @@ flutter:
   assets:
     - lib/assets/logo-512.png
     - lib/assets/logo-150.png
+    - lib/assets/card-1.jpg
+    - lib/assets/card-2.jpg
+    - lib/assets/card-3.jpg
+    - lib/assets/card-4.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
