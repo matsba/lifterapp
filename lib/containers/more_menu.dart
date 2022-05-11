@@ -83,10 +83,10 @@ class MoreMenu extends StatelessWidget {
                           Icons.info_outline,
                           color: Theme.of(context).colorScheme.primary,
                         ),
-                        value: 2)
+                        value: value)
                     : _popUpMenuItemRow(
                         text: "",
-                        value: 2,
+                        value: value,
                       )));
   }
 

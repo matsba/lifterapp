@@ -113,7 +113,7 @@ class WorkoutCardsList extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) =>
                     _buildWorkoutCardList(context, index, vm.cards));
           } else {
-            return const Expanded(child: Text("Ei vielä treenejä!"));
+            return const Text("Ei vielä treenejä!");
           }
         });
   }

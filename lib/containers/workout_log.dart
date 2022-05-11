@@ -67,12 +67,14 @@ class _RowSource extends DataTableSource {
   List<Workout> workouts;
   BuildContext context;
 
+  get reversedWorkoutList => workouts.reversed;
+
   _RowSource({required this.workouts, required this.context});
 
   @override
   DataRow? getRow(int index) {
     if (index < rowCount) {
-      Workout workout = workouts[index];
+      Workout workout = reversedWorkoutList[index];
       return DataRow(
           cells: [
             DataCell(Text(DateFormat("d.M.y H:mm").format(workout.timestamp))),

@@ -137,7 +137,7 @@ class WorkoutRepository {
 
     List<Map<String, Object?>> queryResult = await dbContact.rawQuery(query);
 
-    if (queryResult.isEmpty) {
+    if (queryResult.every((element) => element["volume"] == 0)) {
       return [];
     }
 
