@@ -5,6 +5,8 @@ import 'package:lifterapp/models/log_state.dart';
 import 'package:lifterapp/models/month_workout_volume_statistics.dart';
 import 'package:lifterapp/models/ordinal_workout_volumes.dart';
 import 'package:lifterapp/models/stats_state.dart';
+import 'package:lifterapp/models/workout_group.dart';
+import 'package:lifterapp/models/workout_name_group.dart';
 
 ListState listStateSelector(AppState state) => state.listState;
 
@@ -43,3 +45,17 @@ double? workoutFormInputWeigthSelector(AddWorkoutState state) =>
 
 bool workoutFormInputBodyWeigthSelector(AddWorkoutState state) =>
     state.workoutFormInput.bodyWeigth;
+
+WorkoutNameGroup? latestWorkoutGroupSelector(ListState state, String name) {
+  if (name.isEmpty) return null;
+
+  try {
+    return state.workoutCards
+        .expand((element) => element.groupWorkoutsByName) //flatten
+        .toList()
+        .firstWhere((element) => element.name == name);
+  } on StateError catch (_, e) {
+    //catch firstWhere error if not found
+    return null;
+  }
+}
