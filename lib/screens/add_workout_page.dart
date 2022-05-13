@@ -10,19 +10,27 @@ class AddWorkoutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TitleRow("Lisää treeni", isHeading: true),
-            InputWorkoutName(),
-            InputWorkoutReps(countOfInputs: 20),
-            InputWorkoutWeigth(),
-            InputSubmitButton()
-          ],
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  TitleRow("Lisää treeni", isHeading: true),
+                  InputWorkoutName(),
+                  InputWorkoutReps(countOfInputs: 20),
+                  InputWorkoutWeigth(),
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
+        Container(
+          child: InputSubmitButton(),
+        )
+      ],
     );
   }
 }
