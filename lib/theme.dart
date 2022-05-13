@@ -48,6 +48,13 @@ class GlobalTheme {
     // Define the default font family.
     fontFamily: 'WorkSans',
 
+    textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+            backgroundColor: primaryColorDark,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+            primary: Colors.white)),
+
     // Define the default `TextTheme`. Use this to specify the default
     // text styling for headlines, titles, bodies of text, and more.
     textTheme: const TextTheme(

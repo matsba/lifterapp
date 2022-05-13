@@ -14,9 +14,10 @@ class InputSubmitButton extends StatelessWidget {
     return StoreConnector<AppState, _ViewModel>(
         converter: (store) => _ViewModel.fromStore(store),
         builder: (context, vm) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 8, bottom: 8),
-            child: ElevatedButton(
+          return Container(
+            height: 60,
+            width: double.infinity,
+            child: TextButton(
               onPressed: () {
                 vm.updateValue(vm.value);
 
@@ -24,8 +25,7 @@ class InputSubmitButton extends StatelessWidget {
                         title: "${vm.value.name} lisätty!", icon: Icons.star)
                     .show(context);
               },
-              child: const SizedBox(
-                  child: Center(child: Text('Lisää')), height: 50.0),
+              child: Text('Lisää'),
             ),
           );
         });
