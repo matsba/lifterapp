@@ -12,7 +12,8 @@ AddWorkoutState _insertWorkout(
         AddWorkoutState state, InsertWorkoutAction action) =>
     state.copyWith(
         workoutFormInput: state.workoutFormInput,
-        latestWorkout: action.latestWorkoutGroup);
+        latestWorkout: action.latestWorkoutGroup,
+        restingTime: action.restingTime);
 
 AddWorkoutState _updateForm(
         AddWorkoutState state, UpdateWorkoutFormInputAction action) =>

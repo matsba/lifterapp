@@ -1,6 +1,7 @@
 import 'package:lifterapp/actions/app_actions.dart';
 import 'package:lifterapp/models/app_state.dart';
 import 'package:lifterapp/models/workout_form_input.dart';
+import 'package:lifterapp/services/notification_service.dart';
 import 'package:lifterapp/services/workout_repository.dart';
 import 'package:lifterapp/models/workout.dart';
 import 'package:redux/redux.dart';
@@ -18,14 +19,22 @@ ThunkAction<AppState> insertWorkout(WorkoutFormInput workout) {
         timestamp: DateTime.now());
 
     await repository.insert(insert);
+
+    const Duration restingTimeFromSettings = Duration(seconds: 90);
+
+    await NotificationService()
+        .scheduleNotification(seconds: restingTimeFromSettings.inSeconds);
+
     store.dispatch(InsertWorkoutAction(
-        latestWorkoutGroup: await repository.getLatestGroup(),
-        workoutGroups: await repository.getAllGroups(),
-        log: await repository.getAll(),
-        cards: await repository.getAllCards(),
-        ordinalWorkoutVolumes: await repository.getOridnalWorkoutVolumes(),
-        workoutVolumeStatistics: await repository.getMonthWorkoutStats(),
-        yearWorkoutActivity: await repository.getYearsWeeklyWorkouts()));
+      latestWorkoutGroup: await repository.getLatestGroup(),
+      workoutGroups: await repository.getAllGroups(),
+      log: await repository.getAll(),
+      cards: await repository.getAllCards(),
+      ordinalWorkoutVolumes: await repository.getOridnalWorkoutVolumes(),
+      workoutVolumeStatistics: await repository.getMonthWorkoutStats(),
+      yearWorkoutActivity: await repository.getYearsWeeklyWorkouts(),
+      restingTime: restingTimeFromSettings,
+    ));
   };
 }
 

@@ -30,6 +30,8 @@ class BaseUpdateAction {
 }
 
 class InsertWorkoutAction extends BaseUpdateAction {
+  final Duration restingTime;
+
   InsertWorkoutAction(
       {latestWorkoutGroup,
       workoutGroups,
@@ -37,7 +39,8 @@ class InsertWorkoutAction extends BaseUpdateAction {
       cards,
       ordinalWorkoutVolumes,
       workoutVolumeStatistics,
-      yearWorkoutActivity})
+      yearWorkoutActivity,
+      required this.restingTime})
       : super(
           latestWorkoutGroup: latestWorkoutGroup,
           workoutGroups: workoutGroups,
