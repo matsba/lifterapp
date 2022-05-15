@@ -50,7 +50,7 @@ class GlobalTheme {
 
     textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-            backgroundColor: primaryColorDark,
+            backgroundColor: primary,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
             primary: Colors.white)),
