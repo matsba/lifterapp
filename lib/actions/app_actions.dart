@@ -30,7 +30,7 @@ class BaseUpdateAction {
 }
 
 class InsertWorkoutAction extends BaseUpdateAction {
-  final Duration restingTime;
+  final Duration? restingTime;
 
   InsertWorkoutAction(
       {latestWorkoutGroup,
@@ -50,6 +50,10 @@ class InsertWorkoutAction extends BaseUpdateAction {
           workoutVolumeStatistics: workoutVolumeStatistics,
           yearWorkoutActivity: yearWorkoutActivity,
         );
+}
+
+class ResetRestingTimeAction {
+  ResetRestingTimeAction();
 }
 
 class ImportWorkoutListAction extends BaseUpdateAction {
@@ -132,4 +136,24 @@ class GetYearWorkoutActivityAction {
   final List<int> yearWorkoutActivity;
 
   GetYearWorkoutActivityAction(this.yearWorkoutActivity);
+}
+
+class UpdateUsingRestingTimeAction {
+  final bool usingRestingTime;
+
+  UpdateUsingRestingTimeAction(this.usingRestingTime);
+}
+
+class UpdateRestingTimeInSecondsAction {
+  final int seconds;
+
+  UpdateRestingTimeInSecondsAction(this.seconds);
+}
+
+class GetSettingsAction {
+  final bool usingRestingTime;
+  final int restingTimeInSeconds;
+
+  GetSettingsAction(
+      {required this.usingRestingTime, required this.restingTimeInSeconds});
 }
