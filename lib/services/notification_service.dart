@@ -12,8 +12,13 @@ class NotificationService {
       const AndroidInitializationSettings('app_icon');
 
   final AndroidNotificationDetails _androidNotificationDetails =
-      const AndroidNotificationDetails('lifterapp', 'lifterapp',
-          channelDescription: 'lifterapp notifications');
+      const AndroidNotificationDetails(
+    'lifterapp',
+    'lifterapp',
+    channelDescription: 'lifterapp notifications',
+    icon: 'app_icon',
+    color: Color.fromRGBO(4, 41, 58, 1),
+  );
 
   Future<void> selectNotification(String payload) async {
     debugPrint('notification payload: $payload');
@@ -38,6 +43,7 @@ class NotificationService {
     }
 
     var duration = Duration(seconds: seconds);
+    //TODO: Enum ids
     await _flutterLocalNotificationsPlugin.zonedSchedule(
         0,
         'Tauko loppui!',
@@ -47,5 +53,9 @@ class NotificationService {
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
+  }
+
+  Future<void> cancelScheduledNotification() async {
+    await _flutterLocalNotificationsPlugin.cancel(0);
   }
 }
