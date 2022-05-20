@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:lifterapp/screens/settings_page.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:lifterapp/middleware/app_middleware.dart';
@@ -26,6 +27,7 @@ class ReduxApp extends StatelessWidget {
     store.dispatch(getOrdinalWorkoutVolumes("Kaikki"));
     store.dispatch(getWorkoutVolumeStatistics());
     store.dispatch(getYearWorkoutActivity());
+    store.dispatch(getSettings());
     return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
@@ -45,7 +47,10 @@ class ReduxApp extends StatelessWidget {
                 builder = (BuildContext context) => LogPage();
                 break;
               case '/stats':
-                builder = (BuildContext context) => StatsPage();
+                builder = (BuildContext context) => const StatsPage();
+                break;
+              case '/settings':
+                builder = (BuildContext context) => SettingsPage();
                 break;
               default:
                 throw Exception('Invalid route: ${settings.name}');

@@ -6,13 +6,15 @@ Reducer<AddWorkoutState> addWorkoutReducer = combineReducers([
   TypedReducer(_insertWorkout),
   TypedReducer(_updateForm),
   TypedReducer(_updateLatestWorkoutAfterDelete),
+  TypedReducer(_resetRestingTime),
 ]);
 
 AddWorkoutState _insertWorkout(
         AddWorkoutState state, InsertWorkoutAction action) =>
     state.copyWith(
         workoutFormInput: state.workoutFormInput,
-        latestWorkout: action.latestWorkoutGroup);
+        latestWorkout: action.latestWorkoutGroup,
+        restingTime: action.restingTime);
 
 AddWorkoutState _updateForm(
         AddWorkoutState state, UpdateWorkoutFormInputAction action) =>
@@ -24,6 +26,13 @@ AddWorkoutState _updateForm(
 AddWorkoutState _updateLatestWorkoutAfterDelete(
         AddWorkoutState state, DeleteWorkoutAction action) =>
     state.copyWith(latestWorkout: action.latestWorkoutGroup);
+
+AddWorkoutState _resetRestingTime(
+        AddWorkoutState state, ResetRestingTimeAction action) =>
+    AddWorkoutState(
+        restingTime: null,
+        latestWorkout: state.latestWorkout,
+        workoutFormInput: state.workoutFormInput);
 
 
   // if (action is InsertWorkoutAction) {

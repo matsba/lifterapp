@@ -4,6 +4,7 @@ import 'package:lifterapp/containers/input_workout_name.dart';
 import 'package:lifterapp/containers/input_workout_reps.dart';
 import 'package:lifterapp/containers/input_workout_weigth.dart';
 import 'package:lifterapp/components/title_row.dart';
+import 'package:lifterapp/containers/resting_time_counter.dart';
 
 class AddWorkoutPage extends StatelessWidget {
   const AddWorkoutPage({Key? key}) : super(key: key);
@@ -18,7 +19,13 @@ class AddWorkoutPage extends StatelessWidget {
               padding: EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  TitleRow("Lisää treeni", isHeading: true),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const TitleRow("Lisää treeni", isHeading: true),
+                      RestingTimeCounter(),
+                    ],
+                  ),
                   InputWorkoutName(),
                   InputWorkoutReps(countOfInputs: 20),
                   InputWorkoutWeigth(),

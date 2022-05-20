@@ -3,22 +3,22 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:lifterapp/models/app_state.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MoreMenu extends StatelessWidget {
   const MoreMenu({Key? key}) : super(key: key);
 
   Widget _moreButton() {
-    return StoreConnector<AppState, void Function()>(
-        converter: (store) =>
-            () => store.dispatch(NavigateToAction.push('/log')),
-        builder: (context, navigateToLog) {
+    return StoreConnector<AppState, _ViewModel>(
+        converter: (store) => _ViewModel.fromStore(store),
+        builder: (context, vm) {
           return PopupMenuButton(
               padding: EdgeInsets.all(0),
               onSelected: (result) async {
                 switch (result) {
                   case 1:
-                    navigateToLog();
+                    vm.navigateTo("/log");
                     break;
                   case 2:
                     showLicensePage(context: context);
@@ -27,11 +27,16 @@ class MoreMenu extends StatelessWidget {
                     await launch("https://github.com/matsba/lifterapp/releases",
                         forceSafariVC: false);
                     break;
+                  case 4:
+                    vm.navigateTo("/settings");
+                    break;
                   default:
                 }
               },
               itemBuilder: (context) => [
+                    //TODO: use enums
                     _workoutLogLink(context, 1),
+                    _settingsLink(context, 4),
                     _menuDivider(),
                     _appLicensesLink(context, 2),
                     _appVersionText(context, 3),
@@ -65,6 +70,17 @@ class MoreMenu extends StatelessWidget {
             text: "Treeniloki",
             icon: Icon(
               Icons.list_alt_outlined,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            value: value));
+  }
+
+  PopupMenuItem _settingsLink(BuildContext context, int value) {
+    return PopupMenuItem(
+        child: _popUpMenuItemRow(
+            text: "Asetukset",
+            icon: Icon(
+              Icons.settings,
               color: Theme.of(context).colorScheme.primary,
             ),
             value: value));
@@ -105,4 +121,14 @@ class MoreMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return _moreButton();
   }
+}
+
+class _ViewModel {
+  final Function(String) navigateTo;
+
+  _ViewModel({required this.navigateTo});
+
+  static fromStore(Store<AppState> store) => _ViewModel(
+      navigateTo: (String value) =>
+          store.dispatch(NavigateToAction.push(value)));
 }

@@ -6,21 +6,26 @@ import 'package:meta/meta.dart';
 class AddWorkoutState {
   final WorkoutFormInput workoutFormInput;
   final WorkoutGroup? latestWorkout;
+  final Duration? restingTime;
 
   AddWorkoutState(
-      {required this.workoutFormInput, required this.latestWorkout});
+      {required this.workoutFormInput,
+      required this.latestWorkout,
+      required this.restingTime});
 
   AddWorkoutState.initial()
       : latestWorkout = null,
-        workoutFormInput = WorkoutFormInput();
+        workoutFormInput = WorkoutFormInput(),
+        restingTime = null;
 
   AddWorkoutState copyWith({
     WorkoutFormInput? workoutFormInput,
     WorkoutGroup? latestWorkout,
+    Duration? restingTime,
   }) {
     return AddWorkoutState(
-      workoutFormInput: workoutFormInput ?? this.workoutFormInput,
-      latestWorkout: latestWorkout ?? this.latestWorkout,
-    );
+        workoutFormInput: workoutFormInput ?? this.workoutFormInput,
+        latestWorkout: latestWorkout ?? this.latestWorkout,
+        restingTime: restingTime ?? this.restingTime);
   }
 }
