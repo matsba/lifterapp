@@ -75,7 +75,7 @@ class ImportExportSection extends StatelessWidget {
         .map((x) => [x.id, x.name, x.reps, x.weigth, x.bodyWeigth, x.timestamp]
             .join(","))
         .toList();
-    return headerRow + "\n" + rows.join("\n");
+    return "$headerRow\n${rows.join("\n")}";
   }
 
   Workout _convertCsvStringToWorkout(String workoutRow) {

@@ -1,5 +1,4 @@
 import 'package:lifterapp/actions/app_actions.dart';
-import 'package:lifterapp/models/add_workout_state.dart';
 import 'package:lifterapp/models/settings_state.dart';
 import 'package:redux/redux.dart';
 

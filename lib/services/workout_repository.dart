@@ -142,9 +142,7 @@ class WorkoutRepository {
     }
 
     formatGroupName(var queryResultItem) {
-      return queryResultItem["weeknum"].toString() +
-          "/" +
-          queryResultItem["yearDt"].toString().substring(2, 4);
+      return "${queryResultItem["weeknum"]}/${queryResultItem["yearDt"].toString().substring(2, 4)}";
     }
 
     return queryResult

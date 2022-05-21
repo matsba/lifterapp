@@ -1,6 +1,6 @@
 import 'package:lifterapp/models/month_workout_volume_statistics.dart';
 import 'package:lifterapp/models/ordinal_workout_volumes.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 
 @immutable
 class StatsState {

@@ -3,7 +3,6 @@ import 'package:lifterapp/models/list_state.dart';
 import 'package:lifterapp/models/log_state.dart';
 import 'package:lifterapp/models/settings_state.dart';
 import 'package:lifterapp/models/stats_state.dart';
-import 'package:lifterapp/models/workout_group.dart';
 
 class AppState {
   final AddWorkoutState addWorkoutState;

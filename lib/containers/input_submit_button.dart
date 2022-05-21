@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lifterapp/components/info_snackbar.dart';
-import 'package:lifterapp/components/title_row.dart';
 import 'package:lifterapp/middleware/app_middleware.dart';
 import 'package:lifterapp/models/app_state.dart';
 import 'package:lifterapp/models/form_input_view_model.dart';

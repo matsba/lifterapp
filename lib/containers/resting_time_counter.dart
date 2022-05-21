@@ -103,7 +103,7 @@ class _ViewModel {
 
 class Countdown extends AnimatedWidget {
   Countdown({required this.animation}) : super(listenable: animation);
-  Animation<int> animation;
+  final Animation<int> animation;
 
   @override
   build(BuildContext context) {

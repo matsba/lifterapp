@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:lifterapp/redux_app.dart';
@@ -12,10 +14,10 @@ void main() async {
   await NotificationService().initialize();
 
   tz.initializeTimeZones();
-  final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+  final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
 
   try {
-    tz.setLocalLocation(tz.getLocation(timeZoneName!));
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
   } on tz.LocationNotFoundException catch (_) {
     tz.setLocalLocation(tz.getLocation("Etc/GMT"));
   }

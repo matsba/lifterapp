@@ -1,6 +1,6 @@
 import 'package:lifterapp/models/workout_form_input.dart';
 import 'package:lifterapp/models/workout_group.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 
 @immutable
 class AddWorkoutState {

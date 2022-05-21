@@ -6,7 +6,7 @@ import 'package:lifterapp/models/app_state.dart';
 import 'package:lifterapp/models/month_workout_volume_statistics.dart';
 import 'package:lifterapp/selectors/selectors.dart';
 import 'package:redux/redux.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class WorkoutVolumeStats extends StatelessWidget {
   Widget _singleStatPanel(
@@ -56,7 +56,7 @@ class WorkoutVolumeStats extends StatelessWidget {
                 ],
               ),
               TextButton(
-                onPressed: () => launch(
+                onPressed: () => launchUrlString(
                     "https://www.shape.com/fitness/tips/training-volume-basics-lifting-weights"),
                 child: const Text("Lue lisää"),
               ),

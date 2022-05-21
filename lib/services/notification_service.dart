@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, unused_import
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -21,11 +23,8 @@ class NotificationService {
   );
 
   Future<void> selectNotification(String payload) async {
+    //TODO: where to go when opening push notification
     debugPrint('notification payload: $payload');
-    // await Navigator.push(
-    //   context,
-    //   MaterialPageRoute<void>(builder: (context) => SecondScreen(payload)),
-    // );
   }
 
   Future<void> initialize() async {
@@ -43,7 +42,6 @@ class NotificationService {
     }
 
     var duration = Duration(seconds: seconds);
-    //TODO: Enum ids
     await _flutterLocalNotificationsPlugin.zonedSchedule(
         0,
         'Tauko loppui!',

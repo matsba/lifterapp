@@ -26,6 +26,7 @@ class WorkoutCardsList extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
         child: Card(
+          clipBehavior: Clip.antiAliasWithSaveLayer,
           elevation: 3.0,
           child: Column(
             children: [
@@ -40,7 +41,7 @@ class WorkoutCardsList extends StatelessWidget {
                     ),
                   ),
                   colorFilter: ColorFilter.mode(
-                      Theme.of(context).colorScheme.primaryVariant,
+                      Theme.of(context).colorScheme.primaryContainer,
                       BlendMode.color),
                 ),
                 Card(
@@ -90,7 +91,10 @@ class WorkoutCardsList extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.timer),
+                        const Icon(
+                          Icons.timer_outlined,
+                          color: Colors.black26,
+                        ),
                         const SizedBox(
                           width: 3,
                         ),
