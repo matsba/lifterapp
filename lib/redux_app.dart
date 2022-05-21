@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lifterapp/screens/settings_page.dart';
+import 'package:lifterapp/services/navigation_service.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:lifterapp/middleware/app_middleware.dart';
@@ -36,20 +37,20 @@ class ReduxApp extends StatelessWidget {
           onGenerateRoute: (RouteSettings settings) {
             WidgetBuilder builder;
             // Manage your route names here
-            switch (settings.name) {
-              case '/':
-                builder = (BuildContext context) => const HomePage();
+            switch (NavigationLink.fromString(settings.name ?? "")) {
+              case NavigationLink.home:
+                builder = (BuildContext context) => HomePage();
                 break;
-              case '/list':
+              case NavigationLink.list:
                 builder = (BuildContext context) => ListPage();
                 break;
-              case '/log':
+              case NavigationLink.log:
                 builder = (BuildContext context) => LogPage();
                 break;
-              case '/stats':
-                builder = (BuildContext context) => const StatsPage();
+              case NavigationLink.stats:
+                builder = (BuildContext context) => StatsPage();
                 break;
-              case '/settings':
+              case NavigationLink.settings:
                 builder = (BuildContext context) => SettingsPage();
                 break;
               default:

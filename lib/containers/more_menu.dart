@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_navigation/flutter_redux_navigation.dart';
 import 'package:lifterapp/models/app_state.dart';
+import 'package:lifterapp/services/navigation_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:redux/redux.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class MoreMenu extends StatelessWidget {
   const MoreMenu({Key? key}) : super(key: key);
@@ -18,28 +19,27 @@ class MoreMenu extends StatelessWidget {
               onSelected: (result) async {
                 switch (result) {
                   case 1:
-                    vm.navigateTo("/log");
+                    vm.navigateTo(NavigationLink.log);
                     break;
                   case 2:
                     showLicensePage(context: context);
                     break;
                   case 3:
-                    await launch("https://github.com/matsba/lifterapp/releases",
-                        forceSafariVC: false);
+                    await launchUrlString(
+                        "https://github.com/matsba/lifterapp/releases");
                     break;
                   case 4:
-                    vm.navigateTo("/settings");
+                    vm.navigateTo(NavigationLink.settings);
                     break;
                   default:
                 }
               },
               itemBuilder: (context) => [
-                    //TODO: use enums
-                    _workoutLogLink(context, 1),
-                    _settingsLink(context, 4),
+                    _workoutLogLink(context),
+                    _settingsLink(context),
                     _menuDivider(),
-                    _appLicensesLink(context, 2),
-                    _appVersionText(context, 3),
+                    _appLicensesLink(context),
+                    _appVersionText(context),
                   ]);
         });
   }
@@ -64,7 +64,7 @@ class MoreMenu extends StatelessWidget {
     );
   }
 
-  PopupMenuItem _workoutLogLink(BuildContext context, int value) {
+  PopupMenuItem _workoutLogLink(BuildContext context) {
     return PopupMenuItem(
         child: _popUpMenuItemRow(
             text: "Treeniloki",
@@ -72,10 +72,10 @@ class MoreMenu extends StatelessWidget {
               Icons.list_alt_outlined,
               color: Theme.of(context).colorScheme.primary,
             ),
-            value: value));
+            value: 1));
   }
 
-  PopupMenuItem _settingsLink(BuildContext context, int value) {
+  PopupMenuItem _settingsLink(BuildContext context) {
     return PopupMenuItem(
         child: _popUpMenuItemRow(
             text: "Asetukset",
@@ -83,10 +83,10 @@ class MoreMenu extends StatelessWidget {
               Icons.settings,
               color: Theme.of(context).colorScheme.primary,
             ),
-            value: value));
+            value: 4));
   }
 
-  PopupMenuItem _appVersionText(BuildContext context, int value) {
+  PopupMenuItem _appVersionText(BuildContext context) {
     return PopupMenuItem(
         child: FutureBuilder(
             future: PackageInfo.fromPlatform(),
@@ -99,14 +99,14 @@ class MoreMenu extends StatelessWidget {
                           Icons.info_outline,
                           color: Theme.of(context).colorScheme.primary,
                         ),
-                        value: value)
+                        value: 3)
                     : _popUpMenuItemRow(
                         text: "",
-                        value: value,
+                        value: 3,
                       )));
   }
 
-  PopupMenuItem _appLicensesLink(BuildContext context, int value) {
+  PopupMenuItem _appLicensesLink(BuildContext context) {
     return PopupMenuItem(
         child: _popUpMenuItemRow(
             text: "Lisenssit",
@@ -114,7 +114,7 @@ class MoreMenu extends StatelessWidget {
               Icons.copyright,
               color: Theme.of(context).colorScheme.primary,
             ),
-            value: value));
+            value: 2));
   }
 
   @override
@@ -124,11 +124,11 @@ class MoreMenu extends StatelessWidget {
 }
 
 class _ViewModel {
-  final Function(String) navigateTo;
+  final Function(NavigationLink) navigateTo;
 
   _ViewModel({required this.navigateTo});
 
   static fromStore(Store<AppState> store) => _ViewModel(
-      navigateTo: (String value) =>
-          store.dispatch(NavigateToAction.push(value)));
+      navigateTo: (NavigationLink link) =>
+          store.dispatch(NavigationService().to(link)));
 }
