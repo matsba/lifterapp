@@ -7,10 +7,10 @@ const Color primaryColorLight = Color.fromRGBO(6, 70, 99, 1);
 
 ColorScheme _customColorScheme = const ColorScheme(
     primary: primary,
-    primaryVariant: primaryColorDark,
+    primaryContainer: primaryColorDark,
     secondary: primaryColorAccent,
-    secondaryVariant: primaryColorAccent,
-    surface: Colors.purpleAccent,
+    secondaryContainer: primaryColorAccent,
+    surface: Colors.white,
     background: Colors.white,
     error: Colors.redAccent,
     onPrimary: Colors.white,
@@ -22,6 +22,8 @@ ColorScheme _customColorScheme = const ColorScheme(
 
 class GlobalTheme {
   final globalTheme = ThemeData(
+    useMaterial3: true,
+
     colorScheme: _customColorScheme,
 
     appBarTheme: const AppBarTheme(
@@ -43,7 +45,7 @@ class GlobalTheme {
     snackBarTheme: const SnackBarThemeData(backgroundColor: primaryColorAccent),
 
     pageTransitionsTheme: const PageTransitionsTheme(builders: {
-      TargetPlatform.android: const CupertinoPageTransitionsBuilder(),
+      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
     }),
     // Define the default font family.
     fontFamily: 'WorkSans',

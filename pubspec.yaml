@@ -18,7 +18,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 0.7.0+1
 
 environment:
-  sdk: "2.15.1"
+  sdk: "^2.17.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -36,19 +36,25 @@ dependencies:
   sqflite: ^2.0.0+4
   path: ^1.8.0
   intl: ^0.17.0
-  flutter_redux: ^0.8.2
+  flutter_redux:
+    ^0.8.2
+    # git:
+    #   url: https://github.com/jonaswre/flutter_redux.git
+    #   ref: master
   built_value: ^8.1.3
   redux: ^5.0.0
-  flutter_redux_dev_tools: ^0.5.1
+  #flutter_redux_dev_tools: ^0.5.1
   redux_thunk: ^0.4.0
-  flutter_redux_navigation: #TODO muuta takaisin viralliseen versioon kun korjaus mergetty
-    git:
-      url: https://github.com/leonardo2204/flutter_redux_navigation.git
-      ref: fix-nav-destination
+  flutter_redux_navigation: ^0.7.1
   package_info_plus: ^1.3.0
-  flutter_file_dialog: 2.1.0
+  flutter_file_dialog: ^2.3.0
   url_launcher: ^6.0.17
-  charts_flutter: ^0.12.0
+  charts_flutter:
+    ^0.12.0 #TODO muuta takaisin viralliseen versioon kun korjaus mergetty
+    # git:
+    #   url: https://github.com/fzyzcjy/charts.git
+    #   ref: master
+    #   path: charts_flutter
   redux_logging: ^0.5.0
   flutter_local_notifications: ^9.5.2
   flutter_native_timezone: ^2.0.0
@@ -62,7 +68,8 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
+  lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
