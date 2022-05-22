@@ -14,21 +14,12 @@ class TitleRow extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-          child: Flexible(
-            fit: FlexFit.tight,
-            child: Text(
-              title,
-              //overflow: TextOverflow.ellipsis,
-              style: isHeading
-                  ? Theme.of(context)
-                      .textTheme
-                      .headline1
-                      ?.copyWith(color: color)
-                  : Theme.of(context)
-                      .textTheme
-                      .headline4
-                      ?.copyWith(color: color),
-            ),
+          child: Text(
+            title,
+            //overflow: TextOverflow.ellipsis,
+            style: isHeading
+                ? Theme.of(context).textTheme.headline1?.copyWith(color: color)
+                : Theme.of(context).textTheme.headline4?.copyWith(color: color),
           ),
           padding: const EdgeInsets.only(bottom: padding, top: padding)),
     );
