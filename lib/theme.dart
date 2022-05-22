@@ -22,7 +22,7 @@ ColorScheme _customColorScheme = const ColorScheme(
 
 class GlobalTheme {
   final globalTheme = ThemeData(
-    useMaterial3: true,
+    //useMaterial3: true,
 
     colorScheme: _customColorScheme,
 
