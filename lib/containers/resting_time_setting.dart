@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:lifterapp/actions/app_actions.dart';
 import 'package:lifterapp/components/title_row.dart';
 import 'package:lifterapp/middleware/app_middleware.dart';
 import 'package:lifterapp/models/app_state.dart';
@@ -14,8 +12,7 @@ class RestingTimeSetting extends StatelessWidget {
     return StoreConnector<AppState, _ViewModel>(
         converter: (store) => _ViewModel.fromStore(store),
         builder: (context, vm) {
-          var _textController =
-              TextEditingController(text: vm.value.toString());
+          var textController = TextEditingController(text: vm.value.toString());
           return Column(
             children: [
               TitleRow("Lepoaika"),
@@ -36,41 +33,17 @@ class RestingTimeSetting extends StatelessWidget {
                     Container(
                         width: 40,
                         child: TextField(
-                            keyboardType: TextInputType.number,
-                            controller: _textController,
-                            textAlign: TextAlign.center,
-                            onEditingComplete: () =>
-                                vm.updateValue(_textController.text),
-                            inputFormatters: <TextInputFormatter>[
-                              //FilteringTextInputFormatter.digitsOnly,
-                              //_NumericalRangeFormatter(min: 0, max: 600)
-                            ]))
+                          keyboardType: TextInputType.number,
+                          controller: textController,
+                          textAlign: TextAlign.center,
+                          onEditingComplete: () =>
+                              vm.updateValue(textController.text),
+                        ))
                   ],
                 )
             ],
           );
         });
-  }
-}
-
-class _NumericalRangeFormatter extends TextInputFormatter {
-  final double min;
-  final double max;
-
-  _NumericalRangeFormatter({required this.min, required this.max});
-
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
-    if (newValue.text == '') {
-      return newValue;
-    } else if (int.parse(newValue.text) < min) {
-      return TextEditingValue().copyWith(text: min.toStringAsFixed(2));
-    } else {
-      return int.parse(newValue.text) > max ? oldValue : newValue;
-    }
   }
 }
 

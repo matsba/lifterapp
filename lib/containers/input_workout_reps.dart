@@ -30,7 +30,7 @@ class InputWorkoutReps extends StatelessWidget {
           }
 
           final double itemHeight = size.height / 4;
-          final double itemWidth = size.width;
+          final double itemWidth = size.width * 1.2;
 
           return Column(children: [
             TitleRow("Toistot"),
@@ -45,14 +45,21 @@ class InputWorkoutReps extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   final inputValue = index + 1;
                   return Padding(
-                      padding: const EdgeInsets.all(4.0),
+                      padding: const EdgeInsets.all(2.0),
                       child: OutlinedButton(
                           child: Center(child: Text('$inputValue')),
                           onPressed: () => vm.updateValue(inputValue),
-                          style: TextButton.styleFrom(
-                            primary: Colors.white,
-                            backgroundColor: _bgColor(vm.value!, inputValue),
-                          )));
+                          style: OutlinedButton.styleFrom(
+                              primary: Colors.white,
+                              backgroundColor: _bgColor(vm.value!, inputValue),
+                              side: BorderSide(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(0.2)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12))))));
                 }),
           ]);
         });

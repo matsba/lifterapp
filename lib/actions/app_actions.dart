@@ -1,4 +1,3 @@
-import 'package:lifterapp/middleware/app_middleware.dart';
 import 'package:lifterapp/models/month_workout_volume_statistics.dart';
 import 'package:lifterapp/models/ordinal_workout_volumes.dart';
 import 'package:lifterapp/models/workout.dart';

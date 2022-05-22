@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:lifterapp/models/workout_card.dart';
-import 'package:meta/meta.dart';
 
 @immutable
 class ListState {

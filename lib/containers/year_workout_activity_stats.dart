@@ -29,7 +29,7 @@ class YearWorkoutActivityStats extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Theme.of(context)
                             .colorScheme
-                            .primaryVariant
+                            .primary
                             .withOpacity(vm.yearWorkoutActivity[index] / 3 > 0
                                 ? vm.yearWorkoutActivity[index] / 3
                                 : 0.05),

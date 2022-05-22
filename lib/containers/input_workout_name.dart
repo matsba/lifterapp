@@ -5,8 +5,6 @@ import 'package:lifterapp/components/info_text.dart';
 import 'package:lifterapp/components/title_row.dart';
 import 'package:lifterapp/models/app_state.dart';
 import 'package:lifterapp/models/form_input_view_model.dart';
-import 'package:lifterapp/models/workout.dart';
-import 'package:lifterapp/models/workout_group.dart';
 import 'package:lifterapp/models/workout_name_group.dart';
 import 'package:lifterapp/selectors/selectors.dart';
 import 'package:redux/redux.dart';

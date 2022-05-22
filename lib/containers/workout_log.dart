@@ -11,18 +11,21 @@ import 'package:redux/redux.dart';
 
 class WorkoutLog extends StatelessWidget {
   Widget _workoutLog(BuildContext context, List<Workout> log) {
+    var dataRowHeight = 30.0;
+    var rowsPerPage =
+        MediaQuery.of(context).size.height ~/ (dataRowHeight * 1.7);
+
     return PaginatedDataTable(
-      columns: const [
-        DataColumn(label: Text("Aika")),
-        DataColumn(label: Text("Harjoitus")),
-        DataColumn(label: Text("Toistot")),
-        DataColumn(label: Text("Paino")),
-      ],
-      source: _RowSource(workouts: log, context: context),
-      columnSpacing: 8.0,
-      dataRowHeight: 30,
-      rowsPerPage: 15,
-    );
+        columns: const [
+          DataColumn(label: Text("Aika")),
+          DataColumn(label: Text("Harjoitus")),
+          DataColumn(label: Text("Toistot")),
+          DataColumn(label: Text("Paino")),
+        ],
+        source: _RowSource(workouts: log, context: context),
+        columnSpacing: 8.0,
+        dataRowHeight: dataRowHeight,
+        rowsPerPage: rowsPerPage);
   }
 
   @override
@@ -43,7 +46,10 @@ class WorkoutLog extends StatelessWidget {
                         ImportExportSection()
                       ],
                     ),
-                    _workoutLog(context, vm.workouts),
+                    Container(
+                      child: _workoutLog(context, vm.workouts),
+                      width: MediaQuery.of(context).size.width,
+                    ),
                   ]),
             ),
           );
@@ -82,13 +88,14 @@ class _RowSource extends DataTableSource {
             DataCell(Text(workout.reps.toString())),
             workout.bodyWeigth
                 ? const DataCell(Text(""))
-                : DataCell(Text(workout.weigth.toString() + " kg")),
+                : DataCell(Text("${workout.weigth} kg")),
           ],
           onLongPress: () async => await showDialog(
               context: context,
               builder: (context) => _ShowDialog(workout: workout)));
-    } else
+    } else {
       return null;
+    }
   }
 
   @override
@@ -102,7 +109,7 @@ class _RowSource extends DataTableSource {
 }
 
 class _ShowDialog extends StatelessWidget {
-  Workout workout;
+  final Workout workout;
 
   _ShowDialog({required this.workout});
 

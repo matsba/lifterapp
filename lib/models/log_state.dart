@@ -1,5 +1,5 @@
 import 'package:lifterapp/models/workout.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 
 @immutable
 class LogState {
