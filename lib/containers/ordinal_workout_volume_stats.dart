@@ -22,29 +22,34 @@ class OrdinalWorkoutVolumeStats extends StatelessWidget {
               ),
               const TitleRow("Treenivoluumit"),
               const InfoText("Sisältää vain treenit jotka tehty painoilla"),
-              vm.ordinalWorkoutVolumes.isNotEmpty
-                  ? Column(children: [
-                      DropdownButton(
-                          value: vm.selectedFilter,
-                          items: vm.workoutNames
-                              .map((name) => DropdownMenuItem(
-                                    child: Text(name),
-                                    value: name,
-                                  ))
-                              .toList(),
-                          onChanged: (String? newValue) =>
-                              vm.filterWorkouts(newValue)),
-                      SizedBox(
-                        child: _WorkoutVolumesBarChart(
-                          vm.ordinalWorkoutVolumes,
-                          animate: true,
-                        ),
-                        width: MediaQuery.of(context).size.width,
-                        height: 250,
-                      ),
-                      const Text("Viikko / Vuosi"),
-                    ])
-                  : const Text("Ei treenejä")
+              if (vm.ordinalWorkoutVolumes.isNotEmpty)
+                Column(children: [
+                  Container(
+                    width: 200,
+                    child: DropdownButton(
+                        isExpanded: true,
+                        value: vm.selectedFilter,
+                        items: vm.workoutNames
+                            .map((name) => DropdownMenuItem(
+                                  child: Text(name),
+                                  value: name,
+                                ))
+                            .toList(),
+                        onChanged: (String? newValue) =>
+                            vm.filterWorkouts(newValue)),
+                  ),
+                  SizedBox(
+                    child: _WorkoutVolumesBarChart(
+                      vm.ordinalWorkoutVolumes,
+                      animate: true,
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    height: 250,
+                  ),
+                  const Text("Viikko / Vuosi"),
+                ])
+              else
+                const Text("Ei treenejä")
             ],
           );
         });
