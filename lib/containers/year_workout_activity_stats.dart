@@ -7,6 +7,19 @@ import 'package:lifterapp/selectors/selectors.dart';
 import 'package:redux/redux.dart';
 
 class YearWorkoutActivityStats extends StatelessWidget {
+  final goalForActivity = 3;
+
+  double _opacityForBox(int activityLevel) {
+    double activityRate = activityLevel / goalForActivity;
+    if (activityRate > 1) {
+      return 1;
+    }
+    if (activityRate > 0) {
+      return activityRate;
+    }
+    return 0.05;
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
@@ -30,9 +43,8 @@ class YearWorkoutActivityStats extends StatelessWidget {
                         color: Theme.of(context)
                             .colorScheme
                             .primary
-                            .withOpacity(vm.yearWorkoutActivity[index] / 3 > 0
-                                ? vm.yearWorkoutActivity[index] / 3
-                                : 0.05),
+                            .withOpacity(
+                                _opacityForBox(vm.yearWorkoutActivity[index])),
                         border: Border.all(
                           color: Colors.white,
                         ),
