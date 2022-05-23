@@ -1,15 +1,18 @@
 import 'package:lifterapp/actions/app_actions.dart';
 import 'package:lifterapp/models/app_state.dart';
 import 'package:lifterapp/models/workout_form_input.dart';
+import 'package:lifterapp/services/database_client.dart';
 import 'package:lifterapp/services/notification_service.dart';
+import 'package:lifterapp/services/service_locator.dart';
 import 'package:lifterapp/services/settings_repository.dart';
 import 'package:lifterapp/services/workout_repository.dart';
 import 'package:lifterapp/models/workout.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
+import 'package:sqflite/sqflite.dart';
 
 WorkoutRepository workoutRepository = WorkoutRepository();
-SettingsReposity settingsReposity = SettingsReposity();
+SettingsRepository settingsReposity = SettingsRepository();
 
 ThunkAction<AppState> insertWorkout(WorkoutFormInput workout) {
   return (Store<AppState> store) async {

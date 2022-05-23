@@ -2,43 +2,36 @@ import 'package:lifterapp/models/month_workout_volume_statistics.dart';
 import 'package:lifterapp/models/ordinal_workout_volumes.dart';
 import 'package:lifterapp/models/workout_card.dart';
 import 'package:lifterapp/models/workout_group.dart';
-import 'package:lifterapp/services/database_client.dart';
+import 'package:lifterapp/services/service_locator.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lifterapp/models/workout.dart';
 import 'dart:async';
 
 class WorkoutRepository {
-  final Future<Database> _db = DatabaseClient().db;
+  Database db = getIt.get<Database>();
 
-  Future<int> insert(Workout workout) async {
-    int result = 0;
-    final Database dbContact = await _db;
-    result = await dbContact.insert('workouts', workout.toMap());
-    return result;
+  Future insert(Workout workout) async {
+    await db.insert('workouts', workout.toMap());
   }
 
-  Future<void> replaceAllWorkoutsWithList(List<Workout> workouts) async {
-    final Database dbContact = await _db;
-    await dbContact.transaction((txn) async {
+  Future replaceAllWorkoutsWithList(List<Workout> workouts) async {
+    await db.transaction((txn) async {
       final batch = txn.batch();
-      dbContact.delete('workouts');
+      db.delete('workouts');
       for (var workout in workouts) {
-        dbContact.insert('workouts', workout.toMap());
+        db.insert('workouts', workout.toMap());
       }
       await batch.commit();
     });
   }
 
   Future<List<Workout>> getAll() async {
-    final Database dbContact = await _db;
-    final List<Map<String, Object?>> queryResult =
-        await dbContact.query('workouts');
+    final List<Map<String, Object?>> queryResult = await db.query('workouts');
     return queryResult.map((e) => Workout.fromMap(e)).toList();
   }
 
   Future<List<WorkoutGroup>> getAllGroups() async {
-    final Database dbContact = await _db;
-    final List<Map<String, Object?>> queryResult = await dbContact.rawQuery(
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
         """SELECT year, month, day, name, reps, weigth, count(*) as sets, avg(body_weigth) as body_weigth, GROUP_CONCAT(timestamp) as timestamps
                                     FROM workouts 
                                     GROUP BY year, month, day, name, reps, weigth 
@@ -47,24 +40,21 @@ class WorkoutRepository {
   }
 
   Future<List<String>> getWorkoutNames() async {
-    final Database dbContact = await _db;
-    final List<Map<String, Object?>> queryResult = await dbContact.rawQuery(
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
         """SELECT DISTINCT name FROM workouts WHERE name != "" AND name IS NOT NULL ORDER BY name ASC""");
 
     return queryResult.map((e) => e["name"].toString()).toList();
   }
 
   Future<List<String>> getWorkoutNamesWithoutBodyWeigth() async {
-    final Database dbContact = await _db;
-    final List<Map<String, Object?>> queryResult = await dbContact.rawQuery(
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
         """SELECT DISTINCT name FROM workouts WHERE name != "" AND name IS NOT NULL and body_weigth = 0 ORDER BY name ASC""");
 
     return queryResult.map((e) => e["name"].toString()).toList();
   }
 
   Future<WorkoutGroup?> getLatestGroup() async {
-    final Database dbContact = await _db;
-    final List<Map<String, Object?>> queryResult = await dbContact.rawQuery(
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
         """SELECT year, month, day, name, reps, weigth, count(*) as sets, avg(body_weigth) as body_weigth, GROUP_CONCAT(timestamp) as timestamps
                                     FROM workouts 
                                     GROUP BY year, month, day, name, reps, weigth 
@@ -93,7 +83,6 @@ class WorkoutRepository {
   Future<List<OridnalWorkoutVolumes>> getOridnalWorkoutVolumes(
       {String? filter}) async {
     String filterOrAll = filter ?? "Kaikki";
-    final Database dbContact = await _db;
 
     String query = """
           WITH RECURSIVE cte AS 
@@ -135,7 +124,7 @@ class WorkoutRepository {
             weeknum ASC
             """;
 
-    List<Map<String, Object?>> queryResult = await dbContact.rawQuery(query);
+    List<Map<String, Object?>> queryResult = await db.rawQuery(query);
 
     if (queryResult.every((element) => element["volume"] == 0)) {
       return [];
@@ -194,9 +183,8 @@ class WorkoutRepository {
             ORDER BY timestamp DESC
           )""";
 
-    final Database dbContact = await _db;
-    var acuteLoadResult = await dbContact.rawQuery(acuteLoadQuery);
-    var chronicLoadResult = await dbContact.rawQuery(chronicLoadQuery);
+    var acuteLoadResult = await db.rawQuery(acuteLoadQuery);
+    var chronicLoadResult = await db.rawQuery(chronicLoadQuery);
 
     return MonthWorkoutVolumeStatistics(
         acuteLoad: acuteLoadResult.first["volume"] != null
@@ -217,8 +205,6 @@ class WorkoutRepository {
            GROUP BY weeknum
            ORDER BY timestamp ASC;""";
 
-    final Database dbContact = await _db;
-
     int getDayCountForWeek(
         int weeknum, List<Map<String, Object?>> weekDayCountsQueryResult) {
       return int.parse(weekDayCountsQueryResult
@@ -228,7 +214,7 @@ class WorkoutRepository {
           .toString());
     }
 
-    var queryResult = await dbContact.rawQuery(query);
+    var queryResult = await db.rawQuery(query);
 
     var weekList = List.filled(numberOfWeeks, 0);
 
@@ -238,9 +224,8 @@ class WorkoutRepository {
     return weekList;
   }
 
-  Future<void> deleteWorkout(int id) async {
-    final dbContact = await _db;
-    await dbContact.delete(
+  Future deleteWorkout(int id) async {
+    await db.delete(
       'workouts',
       where: "id = ?",
       whereArgs: [id],
