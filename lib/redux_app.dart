@@ -22,7 +22,6 @@ class ReduxApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    store.dispatch(getLatestWorkoutGroup());
     store.dispatch(getWorkoutCards());
     store.dispatch(getWorkoutLog());
     store.dispatch(getOrdinalWorkoutVolumes("Kaikki"));

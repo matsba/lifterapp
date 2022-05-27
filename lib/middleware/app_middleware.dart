@@ -39,7 +39,6 @@ ThunkAction<AppState> insertWorkout(WorkoutFormInput workout) {
     }
 
     store.dispatch(InsertWorkoutAction(
-      latestWorkoutGroup: await workoutRepository.getLatestGroup(),
       workoutGroups: await workoutRepository.getAllGroups(),
       log: await workoutRepository.getAll(),
       cards: await workoutRepository.getAllCards(),
@@ -55,7 +54,6 @@ ThunkAction<AppState> importWorkoutList(List<Workout> workoutsList) {
   return (Store<AppState> store) async {
     await workoutRepository.replaceAllWorkoutsWithList(workoutsList);
     store.dispatch(ImportWorkoutListAction(
-        latestWorkoutGroup: await workoutRepository.getLatestGroup(),
         workoutGroups: await workoutRepository.getAllGroups(),
         log: await workoutRepository.getAll(),
         cards: await workoutRepository.getAllCards(),
@@ -63,13 +61,6 @@ ThunkAction<AppState> importWorkoutList(List<Workout> workoutsList) {
             await workoutRepository.getOridnalWorkoutVolumes(),
         workoutVolumeStatistics: await workoutRepository.getMonthWorkoutStats(),
         yearWorkoutActivity: await workoutRepository.getYearsWeeklyWorkouts()));
-  };
-}
-
-ThunkAction<AppState> getLatestWorkoutGroup() {
-  return (Store<AppState> store) async {
-    var latest = await workoutRepository.getLatestGroup();
-    store.dispatch(GetLatestWorkoutGroupAction(latest));
   };
 }
 
@@ -112,7 +103,6 @@ ThunkAction<AppState> deleteWorkout(int id) {
   return (Store<AppState> store) async {
     await workoutRepository.deleteWorkout(id);
     store.dispatch(DeleteWorkoutAction(
-        latestWorkoutGroup: await workoutRepository.getLatestGroup(),
         workoutGroups: await workoutRepository.getAllGroups(),
         log: await workoutRepository.getAll(),
         cards: await workoutRepository.getAllCards(),

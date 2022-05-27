@@ -5,7 +5,6 @@ import 'package:lifterapp/models/workout_card.dart';
 import 'package:lifterapp/models/workout_group.dart';
 
 class BaseUpdateAction {
-  final WorkoutGroup? latestWorkoutGroup;
   final List<WorkoutGroup> workoutGroups;
   final List<Workout> log;
   final List<WorkoutCard> cards;
@@ -19,8 +18,7 @@ class BaseUpdateAction {
       log.where((e) => !e.bodyWeigth).map((e) => e.name).toSet().toList();
 
   BaseUpdateAction(
-      {required this.latestWorkoutGroup,
-      required this.workoutGroups,
+      {required this.workoutGroups,
       required this.log,
       required this.cards,
       required this.ordinalWorkoutVolumes,
@@ -32,8 +30,7 @@ class InsertWorkoutAction extends BaseUpdateAction {
   final Duration? restingTime;
 
   InsertWorkoutAction(
-      {latestWorkoutGroup,
-      workoutGroups,
+      {workoutGroups,
       log,
       cards,
       ordinalWorkoutVolumes,
@@ -41,7 +38,6 @@ class InsertWorkoutAction extends BaseUpdateAction {
       yearWorkoutActivity,
       required this.restingTime})
       : super(
-          latestWorkoutGroup: latestWorkoutGroup,
           workoutGroups: workoutGroups,
           log: log,
           cards: cards,
@@ -57,15 +53,13 @@ class ResetRestingTimeAction {
 
 class ImportWorkoutListAction extends BaseUpdateAction {
   ImportWorkoutListAction(
-      {latestWorkoutGroup,
-      workoutGroups,
+      {workoutGroups,
       log,
       cards,
       ordinalWorkoutVolumes,
       workoutVolumeStatistics,
       yearWorkoutActivity})
       : super(
-          latestWorkoutGroup: latestWorkoutGroup,
           workoutGroups: workoutGroups,
           log: log,
           cards: cards,
@@ -77,15 +71,13 @@ class ImportWorkoutListAction extends BaseUpdateAction {
 
 class DeleteWorkoutAction extends BaseUpdateAction {
   DeleteWorkoutAction(
-      {latestWorkoutGroup,
-      workoutGroups,
+      {workoutGroups,
       log,
       cards,
       ordinalWorkoutVolumes,
       workoutVolumeStatistics,
       yearWorkoutActivity})
       : super(
-          latestWorkoutGroup: latestWorkoutGroup,
           workoutGroups: workoutGroups,
           log: log,
           cards: cards,
@@ -93,12 +85,6 @@ class DeleteWorkoutAction extends BaseUpdateAction {
           workoutVolumeStatistics: workoutVolumeStatistics,
           yearWorkoutActivity: yearWorkoutActivity,
         );
-}
-
-class GetLatestWorkoutGroupAction {
-  final WorkoutGroup? latestWorkoutGroup;
-
-  GetLatestWorkoutGroupAction(this.latestWorkoutGroup);
 }
 
 class GetOrdinalWorkoutVolumesAction {
