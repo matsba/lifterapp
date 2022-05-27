@@ -30,21 +30,13 @@ class InsertWorkoutAction extends BaseUpdateAction {
   final Duration? restingTime;
 
   InsertWorkoutAction(
-      {workoutGroups,
-      log,
-      cards,
-      ordinalWorkoutVolumes,
-      workoutVolumeStatistics,
-      yearWorkoutActivity,
-      required this.restingTime})
-      : super(
-          workoutGroups: workoutGroups,
-          log: log,
-          cards: cards,
-          ordinalWorkoutVolumes: ordinalWorkoutVolumes,
-          workoutVolumeStatistics: workoutVolumeStatistics,
-          yearWorkoutActivity: yearWorkoutActivity,
-        );
+      {required super.workoutGroups,
+      required super.log,
+      required super.cards,
+      required super.ordinalWorkoutVolumes,
+      required super.workoutVolumeStatistics,
+      required super.yearWorkoutActivity,
+      required this.restingTime});
 }
 
 class ResetRestingTimeAction {
@@ -53,38 +45,22 @@ class ResetRestingTimeAction {
 
 class ImportWorkoutListAction extends BaseUpdateAction {
   ImportWorkoutListAction(
-      {workoutGroups,
-      log,
-      cards,
-      ordinalWorkoutVolumes,
-      workoutVolumeStatistics,
-      yearWorkoutActivity})
-      : super(
-          workoutGroups: workoutGroups,
-          log: log,
-          cards: cards,
-          ordinalWorkoutVolumes: ordinalWorkoutVolumes,
-          workoutVolumeStatistics: workoutVolumeStatistics,
-          yearWorkoutActivity: yearWorkoutActivity,
-        );
+      {required super.workoutGroups,
+      required super.log,
+      required super.cards,
+      required super.ordinalWorkoutVolumes,
+      required super.workoutVolumeStatistics,
+      required super.yearWorkoutActivity});
 }
 
 class DeleteWorkoutAction extends BaseUpdateAction {
   DeleteWorkoutAction(
-      {workoutGroups,
-      log,
-      cards,
-      ordinalWorkoutVolumes,
-      workoutVolumeStatistics,
-      yearWorkoutActivity})
-      : super(
-          workoutGroups: workoutGroups,
-          log: log,
-          cards: cards,
-          ordinalWorkoutVolumes: ordinalWorkoutVolumes,
-          workoutVolumeStatistics: workoutVolumeStatistics,
-          yearWorkoutActivity: yearWorkoutActivity,
-        );
+      {required super.workoutGroups,
+      required super.log,
+      required super.cards,
+      required super.ordinalWorkoutVolumes,
+      required super.workoutVolumeStatistics,
+      required super.yearWorkoutActivity});
 }
 
 class GetOrdinalWorkoutVolumesAction {

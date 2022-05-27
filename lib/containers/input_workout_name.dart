@@ -94,10 +94,9 @@ class _ViewModel extends FormInputViewModel {
 
   _ViewModel(
       {required this.workoutNames,
-      required value,
-      required updateValue,
-      required this.findLatestWorkout})
-      : super(value: value, updateValue: updateValue);
+      required super.value,
+      required super.updateValue,
+      required this.findLatestWorkout});
 
   static fromStore(Store<AppState> store) => _ViewModel(
       workoutNames: workoutNamesSelector(store.state.logState),

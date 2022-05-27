@@ -67,8 +67,7 @@ class InputWorkoutReps extends StatelessWidget {
 }
 
 class _ViewModel extends FormInputViewModel {
-  _ViewModel({required value, required updateValue})
-      : super(value: value, updateValue: updateValue);
+  _ViewModel({required super.value, required super.updateValue});
 
   static fromStore(Store<AppState> store) => _ViewModel(
       value: workoutFormInputRepsSelector(store.state.addWorkoutState),

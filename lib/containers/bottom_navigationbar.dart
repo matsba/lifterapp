@@ -7,8 +7,7 @@ class BottomNavBar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) changePage;
 
-  const BottomNavBar(this.selectedIndex, this.changePage, {Key? key})
-      : super(key: key);
+  const BottomNavBar(this.selectedIndex, this.changePage, {Key? super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -8,7 +8,7 @@ import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class MoreMenu extends StatelessWidget {
-  const MoreMenu({Key? key}) : super(key: key);
+  const MoreMenu({Key? super.key});
 
   Widget _moreButton() {
     return StoreConnector<AppState, _ViewModel>(

@@ -102,9 +102,8 @@ class _ViewModel extends FormInputViewModel {
   _ViewModel(
       {required this.switchValue,
       required this.updateSwitchValue,
-      required value,
-      required updateValue})
-      : super(value: value, updateValue: updateValue);
+      required super.value,
+      required super.updateValue});
 
   static fromStore(Store<AppState> store) => _ViewModel(
       switchValue:

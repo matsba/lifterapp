@@ -38,6 +38,52 @@ Future main() async {
     expect(result.length, 26);
   });
 
+  test('getAllGroups()', () async {
+    //ASSEMBLE
+    var repo = WorkoutRepository();
+
+    //ARRANGE
+    var result = await repo.getAllGroups();
+
+    //ASSERT
+    expect(result.length, 13);
+  });
+
+  test('getWorkoutNames()', () async {
+    //ASSEMBLE
+    var repo = WorkoutRepository();
+
+    //ARRANGE
+    var result = await repo.getWorkoutNames();
+
+    //ASSERT
+    expect(result.toSet(), {
+      "Hauiskääntö",
+      "Penkki käsipainoilla",
+      "Ylätalja kapealla kahvalla",
+      "Vatsat",
+      "Kyykky tangolla",
+      "Selkä"
+    });
+  });
+
+  test('getWorkoutNamesWithoutBodyWeigth()', () async {
+    //ASSEMBLE
+    var repo = WorkoutRepository();
+
+    //ARRANGE
+    var result = await repo.getWorkoutNamesWithoutBodyWeigth();
+
+    //ASSERT
+    expect(result.toSet(), {
+      "Hauiskääntö",
+      "Penkki käsipainoilla",
+      "Ylätalja kapealla kahvalla",
+      "Kyykky tangolla",
+      "Selkä"
+    });
+  });
+
   test("deleteWorkout()", () async {
     //ASSEMBLE
     Database db = getIt.get<Database>();

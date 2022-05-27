@@ -35,8 +35,9 @@ class _ViewModel extends FormInputViewModel {
   final WorkoutGroup? latestWorkout;
 
   _ViewModel(
-      {required this.latestWorkout, required value, required updateValue})
-      : super(value: value, updateValue: updateValue);
+      {required this.latestWorkout,
+      required super.value,
+      required super.updateValue});
 
   static fromStore(Store<AppState> store) => _ViewModel(
       latestWorkout: store.state.addWorkoutState.latestWorkout,
