@@ -1,15 +1,18 @@
 import 'package:lifterapp/actions/app_actions.dart';
 import 'package:lifterapp/models/app_state.dart';
 import 'package:lifterapp/models/workout_form_input.dart';
+import 'package:lifterapp/services/database_client.dart';
 import 'package:lifterapp/services/notification_service.dart';
+import 'package:lifterapp/services/service_locator.dart';
 import 'package:lifterapp/services/settings_repository.dart';
 import 'package:lifterapp/services/workout_repository.dart';
 import 'package:lifterapp/models/workout.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
+import 'package:sqflite/sqflite.dart';
 
 WorkoutRepository workoutRepository = WorkoutRepository();
-SettingsReposity settingsReposity = SettingsReposity();
+SettingsRepository settingsReposity = SettingsRepository();
 
 ThunkAction<AppState> insertWorkout(WorkoutFormInput workout) {
   return (Store<AppState> store) async {
@@ -36,7 +39,6 @@ ThunkAction<AppState> insertWorkout(WorkoutFormInput workout) {
     }
 
     store.dispatch(InsertWorkoutAction(
-      latestWorkoutGroup: await workoutRepository.getLatestGroup(),
       workoutGroups: await workoutRepository.getAllGroups(),
       log: await workoutRepository.getAll(),
       cards: await workoutRepository.getAllCards(),
@@ -52,7 +54,6 @@ ThunkAction<AppState> importWorkoutList(List<Workout> workoutsList) {
   return (Store<AppState> store) async {
     await workoutRepository.replaceAllWorkoutsWithList(workoutsList);
     store.dispatch(ImportWorkoutListAction(
-        latestWorkoutGroup: await workoutRepository.getLatestGroup(),
         workoutGroups: await workoutRepository.getAllGroups(),
         log: await workoutRepository.getAll(),
         cards: await workoutRepository.getAllCards(),
@@ -60,13 +61,6 @@ ThunkAction<AppState> importWorkoutList(List<Workout> workoutsList) {
             await workoutRepository.getOridnalWorkoutVolumes(),
         workoutVolumeStatistics: await workoutRepository.getMonthWorkoutStats(),
         yearWorkoutActivity: await workoutRepository.getYearsWeeklyWorkouts()));
-  };
-}
-
-ThunkAction<AppState> getLatestWorkoutGroup() {
-  return (Store<AppState> store) async {
-    var latest = await workoutRepository.getLatestGroup();
-    store.dispatch(GetLatestWorkoutGroupAction(latest));
   };
 }
 
@@ -109,7 +103,6 @@ ThunkAction<AppState> deleteWorkout(int id) {
   return (Store<AppState> store) async {
     await workoutRepository.deleteWorkout(id);
     store.dispatch(DeleteWorkoutAction(
-        latestWorkoutGroup: await workoutRepository.getLatestGroup(),
         workoutGroups: await workoutRepository.getAllGroups(),
         log: await workoutRepository.getAll(),
         cards: await workoutRepository.getAllCards(),

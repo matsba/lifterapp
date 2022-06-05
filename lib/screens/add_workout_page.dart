@@ -7,7 +7,7 @@ import 'package:lifterapp/components/title_row.dart';
 import 'package:lifterapp/containers/resting_time_counter.dart';
 
 class AddWorkoutPage extends StatelessWidget {
-  const AddWorkoutPage({Key? key}) : super(key: key);
+  const AddWorkoutPage({Key? super.key});
 
   @override
   Widget build(BuildContext context) {

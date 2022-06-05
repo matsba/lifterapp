@@ -53,10 +53,9 @@ class _ViewModel extends FormInputViewModel {
 
   _ViewModel(
       {required this.usingRestingTime,
-      value,
+      super.value,
       required this.updateUsingRestingTime,
-      updateValue})
-      : super(value: value, updateValue: updateValue);
+      required super.updateValue});
 
   static fromStore(Store<AppState> store) => _ViewModel(
       usingRestingTime: store.state.settingsState.usingRestingTime,

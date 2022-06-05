@@ -5,7 +5,7 @@ import 'package:lifterapp/containers/year_workout_activity_stats.dart';
 import 'package:lifterapp/components/title_row.dart';
 
 class StatsPage extends StatelessWidget {
-  const StatsPage({Key? key}) : super(key: key);
+  const StatsPage({Key? super.key});
 
   @override
   Widget build(BuildContext context) {

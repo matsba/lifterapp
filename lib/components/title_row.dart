@@ -16,7 +16,7 @@ class TitleRow extends StatelessWidget {
       child: Padding(
           child: Text(
             title,
-            //overflow: TextOverflow.ellipsis,
+            textDirection: TextDirection.ltr,
             style: isHeading
                 ? Theme.of(context).textTheme.headline1?.copyWith(color: color)
                 : Theme.of(context).textTheme.headline4?.copyWith(color: color),

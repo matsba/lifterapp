@@ -6,7 +6,7 @@ import 'package:lifterapp/screens/list_page.dart';
 import 'package:lifterapp/screens/stats_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? super.key});
 
   @override
   HomePageState createState() => HomePageState();

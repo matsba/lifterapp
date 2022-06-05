@@ -15,14 +15,10 @@ import 'package:lifterapp/theme.dart';
 class ReduxApp extends StatelessWidget {
   final Store<AppState> store;
 
-  ReduxApp({
-    Key? key,
-    required this.store,
-  }) : super(key: key);
+  ReduxApp({Key? super.key, required this.store});
 
   @override
   Widget build(BuildContext context) {
-    store.dispatch(getLatestWorkoutGroup());
     store.dispatch(getWorkoutCards());
     store.dispatch(getWorkoutLog());
     store.dispatch(getOrdinalWorkoutVolumes("Kaikki"));

@@ -2,43 +2,36 @@ import 'package:lifterapp/models/month_workout_volume_statistics.dart';
 import 'package:lifterapp/models/ordinal_workout_volumes.dart';
 import 'package:lifterapp/models/workout_card.dart';
 import 'package:lifterapp/models/workout_group.dart';
-import 'package:lifterapp/services/database_client.dart';
+import 'package:lifterapp/services/service_locator.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lifterapp/models/workout.dart';
 import 'dart:async';
 
 class WorkoutRepository {
-  final Future<Database> _db = DatabaseClient().db;
+  Database db = getIt.get<Database>();
 
-  Future<int> insert(Workout workout) async {
-    int result = 0;
-    final Database dbContact = await _db;
-    result = await dbContact.insert('workouts', workout.toMap());
-    return result;
+  Future insert(Workout workout) async {
+    await db.insert('workouts', workout.toMap());
   }
 
-  Future<void> replaceAllWorkoutsWithList(List<Workout> workouts) async {
-    final Database dbContact = await _db;
-    await dbContact.transaction((txn) async {
+  Future replaceAllWorkoutsWithList(List<Workout> workouts) async {
+    await db.transaction((txn) async {
       final batch = txn.batch();
-      dbContact.delete('workouts');
+      db.delete('workouts');
       for (var workout in workouts) {
-        dbContact.insert('workouts', workout.toMap());
+        db.insert('workouts', workout.toMap());
       }
       await batch.commit();
     });
   }
 
   Future<List<Workout>> getAll() async {
-    final Database dbContact = await _db;
-    final List<Map<String, Object?>> queryResult =
-        await dbContact.query('workouts');
+    final List<Map<String, Object?>> queryResult = await db.query('workouts');
     return queryResult.map((e) => Workout.fromMap(e)).toList();
   }
 
   Future<List<WorkoutGroup>> getAllGroups() async {
-    final Database dbContact = await _db;
-    final List<Map<String, Object?>> queryResult = await dbContact.rawQuery(
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
         """SELECT year, month, day, name, reps, weigth, count(*) as sets, avg(body_weigth) as body_weigth, GROUP_CONCAT(timestamp) as timestamps
                                     FROM workouts 
                                     GROUP BY year, month, day, name, reps, weigth 
@@ -47,24 +40,21 @@ class WorkoutRepository {
   }
 
   Future<List<String>> getWorkoutNames() async {
-    final Database dbContact = await _db;
-    final List<Map<String, Object?>> queryResult = await dbContact.rawQuery(
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
         """SELECT DISTINCT name FROM workouts WHERE name != "" AND name IS NOT NULL ORDER BY name ASC""");
 
     return queryResult.map((e) => e["name"].toString()).toList();
   }
 
   Future<List<String>> getWorkoutNamesWithoutBodyWeigth() async {
-    final Database dbContact = await _db;
-    final List<Map<String, Object?>> queryResult = await dbContact.rawQuery(
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
         """SELECT DISTINCT name FROM workouts WHERE name != "" AND name IS NOT NULL and body_weigth = 0 ORDER BY name ASC""");
 
     return queryResult.map((e) => e["name"].toString()).toList();
   }
 
   Future<WorkoutGroup?> getLatestGroup() async {
-    final Database dbContact = await _db;
-    final List<Map<String, Object?>> queryResult = await dbContact.rawQuery(
+    final List<Map<String, Object?>> queryResult = await db.rawQuery(
         """SELECT year, month, day, name, reps, weigth, count(*) as sets, avg(body_weigth) as body_weigth, GROUP_CONCAT(timestamp) as timestamps
                                     FROM workouts 
                                     GROUP BY year, month, day, name, reps, weigth 
@@ -93,56 +83,81 @@ class WorkoutRepository {
   Future<List<OridnalWorkoutVolumes>> getOridnalWorkoutVolumes(
       {String? filter}) async {
     String filterOrAll = filter ?? "Kaikki";
-    final Database dbContact = await _db;
 
     String query = """
-          WITH RECURSIVE cte AS 
-          (
-            SELECT
-                DATE('now') AS dt,
-                DATE((
-                SELECT
-                  TIMESTAMP 
-                FROM
-                  workouts 
-                ORDER BY
-                  TIMESTAMP ASC LIMIT 1)) AS last_dt 
-                UNION ALL
-                SELECT
-                  DATE(dt, '-6 day'),
-                  last_dt 
-                FROM
-                  cte 
-                WHERE
-                  dt > last_dt 
-          )
-          SELECT
-            strftime('%Y', dt) AS yearDt,
-            strftime('%W', dt) AS weeknum,
-            IFNULL(COUNT(*) * reps * weigth, 0) AS volume 
-          FROM
-            cte c 
-            LEFT JOIN
-                workouts w 
-                ON strftime('%W', w.TIMESTAMP) = weeknum 
-                AND strftime('%Y', w.TIMESTAMP) = yearDt
-          ${filterOrAll == "Kaikki" ? "AND w.body_weigth = 0" : "AND w.name = '$filter' AND w.body_weigth = 0"}
-          GROUP BY
-            yearDt,
-            weeknum 
-          ORDER BY
-            yearDt,
-            weeknum ASC
-            """;
+          SELECT yearC AS year,
+                weeknumC AS weeknum,
+                SUM(volume) AS volume
+            FROM (
+                WITH RECURSIVE cte AS (
+                        SELECT DATE('now') AS dt,
+                                DATE( (
+                                          SELECT TIMESTAMP
+                                            FROM workouts
+                                          ORDER BY TIMESTAMP ASC
+                                          LIMIT 1
+                                      )
+                                ) AS last_dt
+                        UNION ALL
+                        SELECT DATE(dt, '-1 day'),
+                                last_dt
+                          FROM cte
+                          WHERE dt > last_dt
+                    )
+                    SELECT strftime('%Y', dt) AS yearC,
+                            strftime('%W', dt) AS weeknumC,
+                            strftime('%d', dt) AS dayC,
+                            IFNULL(w.volume, 0) AS volume
+                      FROM cte c-- join values to zero values
+                            LEFT JOIN
+                            (
+                                SELECT yearDt,
+                                      weeknum,
+                                      dayDt,-- sum in out clause because limitation with using count
+                                      SUM(volume) AS volume
+                                  FROM (
+                                          SELECT strftime('%Y', TIMESTAMP) AS yearDt,
+                                                  strftime('%W', TIMESTAMP) AS weeknum,
+                                                  strftime('%d', TIMESTAMP) AS dayDt,
+                                                  name,
+                                                  TIMESTAMP,
+                                                  COUNT( * ) * reps * weigth AS volume
+                                            FROM workouts-- filter if needed
+                                            WHERE ${filterOrAll == "Kaikki" ? "body_weigth = 0" : "name = '$filter' AND body_weigth = 0"}
 
-    List<Map<String, Object?>> queryResult = await dbContact.rawQuery(query);
+                                            GROUP BY yearDt,
+                                                    weeknum,
+                                                    dayDt,
+                                                    name,
+                                                    TIMESTAMP
+                                      )
+                                GROUP BY yearDt,
+                                          weeknum,
+                                          dayDt
+                            )
+                            w ON w.weeknum = weeknumC AND 
+                                w.yearDt = yearC AND 
+                                w.dayDt = dayC
+                      GROUP BY yearC,
+                              weeknumC,
+                              dayC
+                      ORDER BY yearC,
+                              weeknumC,
+                              dayC ASC
+                )
+          GROUP BY year,
+                    weeknum
+          ORDER BY year,
+                    weeknum;
+            """;
+    List<Map<String, Object?>> queryResult = await db.rawQuery(query);
 
     if (queryResult.every((element) => element["volume"] == 0)) {
       return [];
     }
 
     formatGroupName(var queryResultItem) {
-      return "${queryResultItem["weeknum"]}/${queryResultItem["yearDt"].toString().substring(2, 4)}";
+      return "${queryResultItem["weeknum"]}/${queryResultItem["year"].toString().substring(2, 4)}";
     }
 
     return queryResult
@@ -194,9 +209,8 @@ class WorkoutRepository {
             ORDER BY timestamp DESC
           )""";
 
-    final Database dbContact = await _db;
-    var acuteLoadResult = await dbContact.rawQuery(acuteLoadQuery);
-    var chronicLoadResult = await dbContact.rawQuery(chronicLoadQuery);
+    var acuteLoadResult = await db.rawQuery(acuteLoadQuery);
+    var chronicLoadResult = await db.rawQuery(chronicLoadQuery);
 
     return MonthWorkoutVolumeStatistics(
         acuteLoad: acuteLoadResult.first["volume"] != null
@@ -217,8 +231,6 @@ class WorkoutRepository {
            GROUP BY weeknum
            ORDER BY timestamp ASC;""";
 
-    final Database dbContact = await _db;
-
     int getDayCountForWeek(
         int weeknum, List<Map<String, Object?>> weekDayCountsQueryResult) {
       return int.parse(weekDayCountsQueryResult
@@ -228,7 +240,7 @@ class WorkoutRepository {
           .toString());
     }
 
-    var queryResult = await dbContact.rawQuery(query);
+    var queryResult = await db.rawQuery(query);
 
     var weekList = List.filled(numberOfWeeks, 0);
 
@@ -238,9 +250,8 @@ class WorkoutRepository {
     return weekList;
   }
 
-  Future<void> deleteWorkout(int id) async {
-    final dbContact = await _db;
-    await dbContact.delete(
+  Future deleteWorkout(int id) async {
+    await db.delete(
       'workouts',
       where: "id = ?",
       whereArgs: [id],

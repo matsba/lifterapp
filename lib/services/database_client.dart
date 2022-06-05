@@ -10,7 +10,7 @@ class DatabaseClient {
     return _db;
   }
 
-  Future<void> _migrationsV1(database) async {
+  Future<void> migrationsV1(database) async {
     await database.execute("""CREATE TABLE workouts(
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             name TEXT, 
@@ -24,7 +24,7 @@ class DatabaseClient {
             """);
   }
 
-  Future<void> _migrationsV2(database) async {
+  Future<void> migrationsV2(database) async {
     await database.execute("""            
             CREATE TABLE settings(
               using_resting_time INTEGER,
@@ -41,14 +41,14 @@ class DatabaseClient {
       join(path, 'lifterapp.db'),
       onCreate: (database, version) async {
         print("Running $version version of database");
-        await _migrationsV1(database);
-        await _migrationsV2(database);
+        await migrationsV1(database);
+        await migrationsV2(database);
       },
       onUpgrade: (database, version, newVersion) async {
         print("Running $version version of database");
         print("Available upgrade to $newVersion version");
         if (version < newVersion && newVersion == 2) {
-          await _migrationsV2(database);
+          await migrationsV2(database);
           print("Upgraded to $newVersion version!");
         }
       },
