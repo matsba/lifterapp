@@ -85,45 +85,71 @@ class WorkoutRepository {
     String filterOrAll = filter ?? "Kaikki";
 
     String query = """
-          WITH RECURSIVE cte AS 
-          (
-            SELECT
-                DATE('now') AS dt,
-                DATE((
-                SELECT
-                  TIMESTAMP 
-                FROM
-                  workouts 
-                ORDER BY
-                  TIMESTAMP ASC LIMIT 1)) AS last_dt 
-                UNION ALL
-                SELECT
-                  DATE(dt, '-6 day'),
-                  last_dt 
-                FROM
-                  cte 
-                WHERE
-                  dt > last_dt 
-          )
-          SELECT
-            strftime('%Y', dt) AS yearDt,
-            strftime('%W', dt) AS weeknum,
-            IFNULL(COUNT(*) * reps * weigth, 0) AS volume 
-          FROM
-            cte c 
-            LEFT JOIN
-                workouts w 
-                ON strftime('%W', w.TIMESTAMP) = weeknum 
-                AND strftime('%Y', w.TIMESTAMP) = yearDt
-          ${filterOrAll == "Kaikki" ? "AND w.body_weigth = 0" : "AND w.name = '$filter' AND w.body_weigth = 0"}
-          GROUP BY
-            yearDt,
-            weeknum 
-          ORDER BY
-            yearDt,
-            weeknum ASC
-            """;
+          SELECT yearC AS year,
+                weeknumC AS weeknum,
+                SUM(volume) AS volume
+            FROM (
+                WITH RECURSIVE cte AS (
+                        SELECT DATE('now') AS dt,
+                                DATE( (
+                                          SELECT TIMESTAMP
+                                            FROM workouts
+                                          ORDER BY TIMESTAMP ASC
+                                          LIMIT 1
+                                      )
+                                ) AS last_dt
+                        UNION ALL
+                        SELECT DATE(dt, '-1 day'),
+                                last_dt
+                          FROM cte
+                          WHERE dt > last_dt
+                    )
+                    SELECT strftime('%Y', dt) AS yearC,
+                            strftime('%W', dt) AS weeknumC,
+                            strftime('%d', dt) AS dayC,
+                            IFNULL(w.volume, 0) AS volume
+                      FROM cte c-- join values to zero values
+                            LEFT JOIN
+                            (
+                                SELECT yearDt,
+                                      weeknum,
+                                      dayDt,-- sum in out clause because limitation with using count
+                                      SUM(volume) AS volume
+                                  FROM (
+                                          SELECT strftime('%Y', TIMESTAMP) AS yearDt,
+                                                  strftime('%W', TIMESTAMP) AS weeknum,
+                                                  strftime('%d', TIMESTAMP) AS dayDt,
+                                                  name,
+                                                  TIMESTAMP,
+                                                  COUNT( * ) * reps * weigth AS volume
+                                            FROM workouts-- filter if needed
+                                            WHERE ${filterOrAll == "Kaikki" ? "body_weigth = 0" : "name = '$filter' AND body_weigth = 0"}
 
+                                            GROUP BY yearDt,
+                                                    weeknum,
+                                                    dayDt,
+                                                    name,
+                                                    TIMESTAMP
+                                      )
+                                GROUP BY yearDt,
+                                          weeknum,
+                                          dayDt
+                            )
+                            w ON w.weeknum = weeknumC AND 
+                                w.yearDt = yearC AND 
+                                w.dayDt = dayC
+                      GROUP BY yearC,
+                              weeknumC,
+                              dayC
+                      ORDER BY yearC,
+                              weeknumC,
+                              dayC ASC
+                )
+          GROUP BY year,
+                    weeknum
+          ORDER BY year,
+                    weeknum;
+            """;
     List<Map<String, Object?>> queryResult = await db.rawQuery(query);
 
     if (queryResult.every((element) => element["volume"] == 0)) {
@@ -131,7 +157,7 @@ class WorkoutRepository {
     }
 
     formatGroupName(var queryResultItem) {
-      return "${queryResultItem["weeknum"]}/${queryResultItem["yearDt"].toString().substring(2, 4)}";
+      return "${queryResultItem["weeknum"]}/${queryResultItem["year"].toString().substring(2, 4)}";
     }
 
     return queryResult
