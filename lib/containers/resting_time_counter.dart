@@ -11,14 +11,35 @@ class RestingTimeCounter extends StatefulWidget {
 }
 
 class _RestingTimeCounterState extends State<RestingTimeCounter>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController _controller;
+  Duration? _animationDuration;
+  DateTime? _animationStartTime;
 
   @override
   void initState() {
     super.initState();
-    _controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 0));
+    WidgetsBinding.instance.addObserver(this);
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 0),
+    );
+  }
+
+  _syncTimerAnimation() {
+    Duration ellapsedDuration =
+        _animationDuration! - DateTime.now().difference(_animationStartTime!);
+    _controller.duration =
+        ellapsedDuration.isNegative ? Duration(seconds: 0) : ellapsedDuration;
+    _controller.resync(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      _syncTimerAnimation();
+    }
   }
 
   @override
@@ -29,34 +50,14 @@ class _RestingTimeCounterState extends State<RestingTimeCounter>
           if (vm.restingTime == null) {
             return const SizedBox();
           }
-          _controller.duration = vm.restingTime;
+          _animationStartTime = DateTime.now();
+          _animationDuration = _controller.duration = vm.restingTime;
           _controller.forward();
 
           var tween = StepTween(
             begin: 1 + vm.restingTime!.inSeconds,
             end: 0,
           ).animate(_controller);
-
-          tween.addListener(() {
-            if (_controller.lastElapsedDuration != null &&
-                _controller.duration != null) {
-              print(
-                  "Time elapsed ${_controller.lastElapsedDuration!} with status ${tween.status}");
-
-              var startTime = DateTime.now().subtract((_controller.duration!));
-              var currentTime = DateTime.now();
-              var difference = startTime.difference(currentTime);
-
-              if (difference.inSeconds + 1 > _controller.duration!.inSeconds) {
-                print(
-                    "startTime $startTime, _controller.lastElapsedDuration ${_controller.lastElapsedDuration} currentTime $currentTime --- $difference");
-                print(
-                    "There was a difference in time! ${difference.inSeconds}");
-                _controller.duration = difference;
-                _controller.forward();
-              }
-            }
-          });
 
           tween.addStatusListener((status) {
             if (status == AnimationStatus.completed) {
