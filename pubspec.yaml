@@ -36,15 +36,8 @@ dependencies:
   sqflite: ^2.0.0+4
   path: ^1.8.0
   intl: ^0.17.0
-  flutter_redux:
-    ^0.8.2
-    # git:
-    #   url: https://github.com/jonaswre/flutter_redux.git
-    #   ref: master
   built_value: ^8.1.3
-  redux: ^5.0.0
   #flutter_redux_dev_tools: ^0.5.1
-  redux_thunk: ^0.4.0
   flutter_redux_navigation: ^0.7.1
   package_info_plus: ^1.3.0
   flutter_file_dialog: ^2.3.0
@@ -55,11 +48,15 @@ dependencies:
     #   url: https://github.com/fzyzcjy/charts.git
     #   ref: master
     #   path: charts_flutter
-  redux_logging: ^0.5.0
   flutter_local_notifications: ^9.5.2
   flutter_native_timezone: ^2.0.0
   sqflite_common_ffi: ^2.1.1
   get_it: ^7.2.0
+  flutter_riverpod: ^2.0.2
+  riverpod_navigator_core: ^1.0.10
+  go_router: ^5.0.5
+  font_awesome_flutter: ^10.2.1
+  hooks_riverpod: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +69,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.1
   lints: ^2.0.0
+  mockito: ^5.3.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -89,12 +87,13 @@ flutter:
   #   - images/a_dot_ham.jpeg
 
   assets:
-    - lib/assets/logo-512.png
-    - lib/assets/logo-150.png
-    - lib/assets/card-1.jpg
-    - lib/assets/card-2.jpg
-    - lib/assets/card-3.jpg
-    - lib/assets/card-4.jpg
+    - assets/logo-512.png
+    - assets/logo-150.png
+    - assets/card-1.jpg
+    - assets/card-2.jpg
+    - assets/card-3.jpg
+    - assets/card-4.jpg
+    - assets/debug/lifterapp.db #TODO: Only in debug version
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -121,13 +120,13 @@ flutter:
   fonts:
     - family: WorkSans
       fonts:
-        - asset: lib/assets/fonts/WorkSans-Regular.ttf
-        - asset: lib/assets/fonts/WorkSans-ExtraBold.ttf
+        - asset: assets/fonts/WorkSans-Regular.ttf
+        - asset: assets/fonts/WorkSans-ExtraBold.ttf
           weight: 800
-        - asset: lib/assets/fonts/WorkSans-ExtraBoldItalic.ttf
+        - asset: assets/fonts/WorkSans-ExtraBoldItalic.ttf
           weight: 800
           style: italic
-        - asset: lib/assets/fonts/WorkSans-Italic.ttf
+        - asset: assets/fonts/WorkSans-Italic.ttf
           style: italic
   #
   # For details regarding fonts from package dependencies,

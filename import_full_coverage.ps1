@@ -1,0 +1,1 @@
+dart run .\import_full_coverage.dart

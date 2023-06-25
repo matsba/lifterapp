@@ -52,3 +52,5 @@ app.*.map.json
 
 #own script to upload builds
 app-release-to-dropbox.ps1
+
+coverage

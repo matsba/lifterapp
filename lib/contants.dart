@@ -1,0 +1,2 @@
+const double WEIGTH_SLIDER_MIN_VALUE = 0;
+const double WEIGTH_SLIDER_MAX_VALUE = 200;

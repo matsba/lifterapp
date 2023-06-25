@@ -53,6 +53,8 @@ class GlobalTheme {
     textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
             backgroundColor: primary,
+            disabledBackgroundColor: Colors.grey,
+            disabledForegroundColor: Colors.white,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
             primary: Colors.white)),
